@@ -1,0 +1,35 @@
+<nav class="navbar">
+    <div class="navbar-container">
+        <div class="navbar-brand">
+            <a routerLink="/">E-Ticaret</a>
+        </div>
+        <div class="menu-toggle" (click)="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="navbar-menu" [class.active]="isMenuOpen">
+            <ul class="nav-links">
+                <li><a routerLink="/" (click)="closeMenu()">Ana Sayfa</a></li>
+                <li><a routerLink="/products" (click)="closeMenu()">Ürünler</a></li>
+                <li><a routerLink="/categories" (click)="closeMenu()">Kategoriler</a></li>
+            </ul>
+            <div class="navbar-end">
+                <div class="cart-icon">
+                    <a routerLink="/cart" (click)="closeMenu()">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="cart-count">0</span>
+                    </a>
+                </div>
+                <div class="user-menu">
+                    <a routerLink="/login" (click)="closeMenu()">
+                        <i class="fas fa-sign-in-alt"></i> Giriş Yap
+                    </a>
+                    <a routerLink="/register" (click)="closeMenu()">
+                        <i class="fas fa-user-plus"></i> Kayıt Ol
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
