@@ -1,7 +1,58 @@
 <section class="hero-section">
+    <div class="video-container">
+        <video #videoPlayer autoplay loop muted playsinline class="background-video" (error)="handleVideoError($event)">
+            <source src="./assets/videos/hero5.mp4" type="video/mp4">    
+            Tarayıcınız video elementini desteklemiyor.
+        </video>
+        <div class="video-overlay"></div>
+    </div>
     <div class="hero-content">
-        <h1>Yeni Sezon Ürünleri</h1>
-        <p>En yeni ürünleri keşfedin ve modayı yakından takip edin</p>
-        <button class="primary-button">Alışverişe Başla</button>
+        <div class="hero-left">
+            <div class="discount-badge">
+                <span class="discount-text">%50'ye Varan İndirimler</span>
+                <span class="discount-arrow">→</span>
+            </div>
+            <h1>Yeni Nesil<br><span class="highlight">Teknoloji</span><br>Mağazası</h1>
+            <p>Türkiye'nin en büyük elektronik mağazasında binlerce ürün ve özel kampanyalar sizleri bekliyor!</p>
+            <div class="hero-buttons">
+                <button class="primary-button">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Hemen Alışverişe Başla</span>
+                </button>
+                <button class="secondary-button">
+                    <i class="fas fa-star"></i>
+                    <span>Kampanyaları İncele</span>
+                </button>
+            </div>
+            <div class="hero-features">
+                <div class="feature">
+                    <i class="fas fa-truck"></i>
+                    <span>Ücretsiz Kargo</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Güvenli Ödeme</span>
+                </div>
+                <div class="feature">
+                    <i class="fas fa-undo"></i>
+                    <span>Kolay İade</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-right">
+            <div class="product-showcase">
+                <div class="product-card featured">
+                    <div class="product-badge">En Çok Satan</div>
+                    <img src="assets/images/makbook.jpg" alt="Laptop">
+                    <div class="product-info">
+                        <h3>MacBook Pro M3</h3>
+                        <div class="price">
+                            <span class="old-price">₺89.999</span>
+                            <span class="new-price">₺79.999</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
