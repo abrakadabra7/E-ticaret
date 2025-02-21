@@ -1,0 +1,18 @@
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 25px 0;
+}
+
+.forgot-password {
+    color: #FF4757;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+} 

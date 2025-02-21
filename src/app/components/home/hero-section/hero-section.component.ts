@@ -1,5 +1,5 @@
-import { Component, ViewChild, ElementRef, OnInit, AfterViewInit, Renderer2 } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, ViewChild, ElementRef, OnInit, AfterViewInit, Renderer2, PLATFORM_ID, Inject } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-hero-section',
@@ -10,71 +10,70 @@ import { CommonModule } from '@angular/common';
 })
 export class HeroSectionComponent implements OnInit, AfterViewInit {
   @ViewChild('videoPlayer') videoPlayer!: ElementRef<HTMLVideoElement>;
+  private isBrowser: boolean;
 
-  constructor(private renderer: Renderer2) {}
+  constructor(
+    private renderer: Renderer2,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
-  ngOnInit() {}
+  ngOnInit() {
+    if (!this.isBrowser) {
+      return;
+    }
+  }
 
   ngAfterViewInit() {
-    this.initializeVideo();
+    if (this.isBrowser) {
+      this.initializeVideo();
+    } else {
+      this.setFallbackBackground();
+    }
   }
 
   private initializeVideo() {
-    if (this.videoPlayer && this.videoPlayer.nativeElement) {
+    if (this.videoPlayer?.nativeElement) {
       const video = this.videoPlayer.nativeElement;
 
-      // Video yüklendiğinde
       video.addEventListener('loadeddata', () => {
         console.log('Video yüklendi');
         this.playVideo();
       });
 
-      // Video hata verdiğinde
       video.addEventListener('error', (e) => {
         console.error('Video yükleme hatası:', e);
-        this.handleVideoError(e);
+        this.setFallbackBackground();
       });
 
-      // Video durakladığında
-      video.addEventListener('pause', () => {
-        this.playVideo();
-      });
-
-      // Video bittiğinde
       video.addEventListener('ended', () => {
-        this.playVideo();
+        video.play().catch(() => this.setFallbackBackground());
       });
-
-      // İlk yükleme denemesi
-      this.loadVideo();
+    } else {
+      this.setFallbackBackground();
     }
-  }
-
-  private loadVideo() {
-    const video = this.videoPlayer.nativeElement;
-    video.load();
-    this.playVideo();
   }
 
   private playVideo() {
-    const video = this.videoPlayer.nativeElement;
-    const playPromise = video.play();
-
-    if (playPromise !== undefined) {
-      playPromise.then(() => {
-        console.log('Video oynatılıyor');
-      }).catch(error => {
-        console.error('Video oynatma hatası:', error);
-        this.handleVideoError(error);
-      });
+    if (!this.videoPlayer?.nativeElement) {
+      return;
     }
+
+    const video = this.videoPlayer.nativeElement;
+    video.play().catch((error) => {
+      console.error('Video oynatma hatası:', error);
+      this.setFallbackBackground();
+    });
   }
 
-  handleVideoError(event: any) {
-    console.error('Video hatası:', event);
-    const heroSection = document.querySelector('.hero-section');
-    if (heroSection) {
-      this.renderer.setStyle(heroSection, 'background', 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)');
+  private setFallbackBackground() {
+    if (this.isBrowser) {
+      const heroSection = document.querySelector('.hero-section');
+      if (heroSection) {
+        this.renderer.setStyle(heroSection, 'background', 'linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%)');
+      }
     }
   }
 }
+

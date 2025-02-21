@@ -1,0 +1,105 @@
+<div class="modal-overlay" [class.active]="isOpen" (click)="onOverlayClick($event)">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h2>Kayıt Ol</h2>
+            <button class="close-btn" (click)="closeModal.emit()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <div class="input-group" [class.error]="registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid">
+                    <i class="fas fa-user"></i>
+                    <input type="text" formControlName="fullName" placeholder="Ad Soyad">
+                </div>
+                <div class="error-message" *ngIf="registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ getErrorMessage('fullName') }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group" [class.error]="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" formControlName="email" placeholder="E-posta adresiniz">
+                </div>
+                <div class="error-message" *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.invalid">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ getErrorMessage('email') }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group" [class.error]="registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid">
+                    <i class="fas fa-phone"></i>
+                    <input type="tel" formControlName="phone" placeholder="Telefon numaranız">
+                </div>
+                <div class="error-message" *ngIf="registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ getErrorMessage('phone') }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group" [class.error]="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+                    <i class="fas fa-lock"></i>
+                    <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Şifreniz">
+                    <button type="button" class="toggle-password" (click)="togglePasswordVisibility('password')">
+                        <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                    </button>
+                </div>
+                <div class="error-message" *ngIf="registerForm.get('password')?.touched && registerForm.get('password')?.invalid">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ getErrorMessage('password') }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group" [class.error]="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid">
+                    <i class="fas fa-lock"></i>
+                    <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword" placeholder="Şifrenizi tekrar girin">
+                    <button type="button" class="toggle-password" (click)="togglePasswordVisibility('confirmPassword')">
+                        <i [class]="showConfirmPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                    </button>
+                </div>
+                <div class="error-message" *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.invalid">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ getErrorMessage('confirmPassword') }}
+                </div>
+            </div>
+
+            <div class="terms">
+                <label class="checkbox-label">
+                    <input type="checkbox" formControlName="acceptTerms">
+                    <span>
+                        <a href="#" class="terms-link">Kullanım Koşulları</a> ve
+                        <a href="#" class="terms-link">Gizlilik Politikası</a>'nı kabul ediyorum
+                    </span>
+                </label>
+            </div>
+
+            <button type="submit" class="submit-btn" [disabled]="registerForm.invalid">
+                <i class="fas fa-user-plus"></i>
+                <span>Kayıt Ol</span>
+            </button>
+
+            <div class="social-login">
+                <p>veya</p>
+                <div class="social-buttons">
+                    <button type="button" class="google-btn" (click)="registerWithGoogle()">
+                        <i class="fab fa-google"></i>
+                        <span>Google ile Kayıt Ol</span>
+                    </button>
+                    <button type="button" class="facebook-btn" (click)="registerWithFacebook()">
+                        <i class="fab fa-facebook-f"></i>
+                        <span>Facebook ile Kayıt Ol</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="modal-footer">
+            Zaten hesabınız var mı? <a href="#" (click)="$event.preventDefault()">Giriş Yap</a>
+        </div>
+    </div>
+</div> 

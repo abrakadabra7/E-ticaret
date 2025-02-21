@@ -133,7 +133,7 @@
     gap: 15px;
 }
 
-.user-menu a {
+.user-menu button {
     color: #2c3e50;
     text-decoration: none;
     font-size: 15px;
@@ -141,25 +141,30 @@
     padding: 10px 20px;
     border-radius: 6px;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
 }
 
-.user-menu a:first-child {
+.login-btn {
     background-color: transparent;
     border: 2px solid #3498db;
     color: #3498db;
 }
 
-.user-menu a:first-child:hover {
+.login-btn:hover {
     background-color: #3498db;
     color: white;
 }
 
-.user-menu a:last-child {
+.register-btn {
     background-color: #3498db;
-    color: white;
+    color: white !important;
+    border: none;
 }
 
-.user-menu a:last-child:hover {
+.register-btn:hover {
     background-color: #2980b9;
 }
 

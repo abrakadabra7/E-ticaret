@@ -22,14 +22,26 @@
                     </a>
                 </div>
                 <div class="user-menu">
-                    <a routerLink="/login" (click)="closeMenu()">
-                        <i class="fas fa-sign-in-alt"></i> Giriş Yap
-                    </a>
-                    <a routerLink="/register" (click)="closeMenu()">
-                        <i class="fas fa-user-plus"></i> Kayıt Ol
-                    </a>
+                    <button class="login-btn" (click)="openLoginModal()">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Giriş Yap
+                    </button>
+                    <button class="register-btn" (click)="openRegisterModal()">
+                        <i class="fas fa-user-plus"></i>
+                        Kayıt Ol
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 </nav>
+
+<app-login-modal
+    [isOpen]="isLoginModalOpen"
+    (closeModal)="closeLoginModal()">
+</app-login-modal>
+
+<app-register-modal
+    [isOpen]="isRegisterModalOpen"
+    (closeModal)="closeRegisterModal()">
+</app-register-modal>

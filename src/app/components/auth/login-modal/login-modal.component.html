@@ -1,0 +1,67 @@
+<div class="modal-overlay" [class.active]="isOpen" (click)="onOverlayClick($event)">
+    <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h2>Giriş Yap</h2>
+            <button class="close-btn" (click)="closeModal.emit()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <div class="input-group" [class.error]="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" formControlName="email" placeholder="E-posta adresiniz">
+                </div>
+                <div class="error-message" *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.invalid">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ getErrorMessage('email') }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="input-group" [class.error]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+                    <i class="fas fa-lock"></i>
+                    <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Şifreniz">
+                    <button type="button" class="toggle-password" (click)="togglePasswordVisibility()">
+                        <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                    </button>
+                </div>
+                <div class="error-message" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+                    <i class="fas fa-exclamation-circle"></i>
+                    {{ getErrorMessage('password') }}
+                </div>
+            </div>
+
+            <div class="form-options">
+                <label class="checkbox-label">
+                    <input type="checkbox" formControlName="rememberMe">
+                    <span>Beni Hatırla</span>
+                </label>
+                <a href="#" class="forgot-password">Şifremi Unuttum</a>
+            </div>
+
+            <button type="submit" class="submit-btn" [disabled]="loginForm.invalid">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Giriş Yap</span>
+            </button>
+
+            <div class="social-login">
+                <p>veya</p>
+                <div class="social-buttons">
+                    <button type="button" class="google-btn" (click)="loginWithGoogle()">
+                        <i class="fab fa-google"></i>
+                        <span>Google ile Giriş Yap</span>
+                    </button>
+                    <button type="button" class="facebook-btn" (click)="loginWithFacebook()">
+                        <i class="fab fa-facebook-f"></i>
+                        <span>Facebook ile Giriş Yap</span>
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="modal-footer">
+            Henüz hesabınız yok mu? <a href="#" (click)="$event.preventDefault()">Hemen Kayıt Ol</a>
+        </div>
+    </div>
+</div> 
