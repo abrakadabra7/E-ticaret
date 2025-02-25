@@ -1,0 +1,51 @@
+<div class="products-page">
+  <div class="header">
+    <h1>Ürünler</h1>
+    <button class="btn-primary" routerLink="new">
+      <i class="fas fa-plus"></i>
+      Yeni Ürün
+    </button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Resim</th>
+          <th>İsim</th>
+          <th>Kategori</th>
+          <th>Fiyat</th>
+          <th>Stok</th>
+          <th>Durum</th>
+          <th>İşlemler</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of products">
+          <td>{{product.id}}</td>
+          <td>
+            <img [src]="product.images[0]" [alt]="product.name" class="product-image">
+          </td>
+          <td>{{product.name}}</td>
+          <td>{{product.category?.name}}</td>
+          <td>{{product.price | currency:'TRY':'symbol-narrow':'1.2-2'}}</td>
+          <td>{{product.stock}}</td>
+          <td>
+            <span class="status" [class.active]="product.is_active">
+              {{product.is_active ? 'Aktif' : 'Pasif'}}
+            </span>
+          </td>
+          <td>
+            <button class="btn-icon" [routerLink]="[product.id, 'edit']">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-icon delete" (click)="deleteProduct(product.id)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> 
