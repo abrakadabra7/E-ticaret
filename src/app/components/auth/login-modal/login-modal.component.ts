@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-login-modal',
@@ -9,6 +10,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
     CommonModule,
     ReactiveFormsModule
   ],
+  providers: [AuthService],
   templateUrl: './login-modal.component.html',
   styleUrls: ['./login-modal.component.css', '../auth-modal.css']
 })
@@ -18,19 +20,63 @@ export class LoginModalComponent {
   
   loginForm: FormGroup;
   showPassword = false;
+  errorMessage: string | null = null;
+  isLoading = false;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8)]],
       rememberMe: [false]
     });
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.loginForm.valid) {
-      console.log('Form submitted:', this.loginForm.value);
-      // Burada giriş işlemleri yapılacak
+      this.isLoading = true;
+      this.errorMessage = null;
+      
+      try {
+        await this.authService.login(this.loginForm.value);
+        this.closeModal.emit();
+      } catch (error) {
+        this.errorMessage = error instanceof Error ? error.message : 'Giriş işlemi başarısız oldu.';
+      } finally {
+        this.isLoading = false;
+      }
+    } else {
+      this.errorMessage = 'Lütfen tüm alanları doğru şekilde doldurun.';
+    }
+  }
+
+  async loginWithGoogle() {
+    this.isLoading = true;
+    this.errorMessage = null;
+    
+    try {
+      await this.authService.loginWithGoogle();
+      this.closeModal.emit();
+    } catch (error) {
+      this.errorMessage = error instanceof Error ? error.message : 'Google ile giriş başarısız oldu.';
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async loginWithFacebook() {
+    this.isLoading = true;
+    this.errorMessage = null;
+    
+    try {
+      await this.authService.loginWithFacebook();
+      this.closeModal.emit();
+    } catch (error) {
+      this.errorMessage = error instanceof Error ? error.message : 'Facebook ile giriş başarısız oldu.';
+    } finally {
+      this.isLoading = false;
     }
   }
 
@@ -58,19 +104,10 @@ export class LoginModalComponent {
       
       case 'password':
         if (errors['required']) return 'Şifre zorunludur';
+        if (errors['minlength']) return 'Şifre en az 8 karakter olmalıdır';
         break;
     }
     
     return '';
-  }
-
-  loginWithGoogle() {
-    console.log('Google ile giriş yap');
-    // Google giriş işlemleri
-  }
-
-  loginWithFacebook() {
-    console.log('Facebook ile giriş yap');
-    // Facebook giriş işlemleri
   }
 } 

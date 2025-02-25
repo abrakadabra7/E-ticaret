@@ -6,6 +6,13 @@
                 <i class="fas fa-times"></i>
             </button>
         </div>
+
+        <!-- Genel hata mesajı -->
+        <div class="error-alert" *ngIf="errorMessage">
+            <i class="fas fa-exclamation-circle"></i>
+            {{ errorMessage }}
+        </div>
+
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
             <div class="form-group">
                 <div class="input-group" [class.error]="registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid">
@@ -78,19 +85,20 @@
                 </label>
             </div>
 
-            <button type="submit" class="submit-btn" [disabled]="registerForm.invalid">
-                <i class="fas fa-user-plus"></i>
-                <span>Kayıt Ol</span>
+            <button type="submit" class="submit-btn" [disabled]="registerForm.invalid || isLoading">
+                <i class="fas fa-user-plus" *ngIf="!isLoading"></i>
+                <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
+                <span>{{ isLoading ? 'Kaydediliyor...' : 'Kayıt Ol' }}</span>
             </button>
 
             <div class="social-login">
                 <p>veya</p>
                 <div class="social-buttons">
-                    <button type="button" class="google-btn" (click)="registerWithGoogle()">
+                    <button type="button" class="google-btn" (click)="registerWithGoogle()" [disabled]="isLoading">
                         <i class="fab fa-google"></i>
                         <span>Google ile Kayıt Ol</span>
                     </button>
-                    <button type="button" class="facebook-btn" (click)="registerWithFacebook()">
+                    <button type="button" class="facebook-btn" (click)="registerWithFacebook()" [disabled]="isLoading">
                         <i class="fab fa-facebook-f"></i>
                         <span>Facebook ile Kayıt Ol</span>
                     </button>

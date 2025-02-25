@@ -168,6 +168,91 @@
     background-color: #2980b9;
 }
 
+/* Kullanıcı Menüsü - Giriş Yapmış */
+.user-menu.logged-in {
+    position: relative;
+}
+
+.profile-btn {
+    background: none;
+    border: none;
+    color: #2c3e50;
+    padding: 8px 15px;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    border-radius: 25px;
+    transition: all 0.3s ease;
+}
+
+.profile-btn:hover {
+    background: rgba(52, 152, 219, 0.1);
+}
+
+.profile-btn i.fa-user-circle {
+    font-size: 20px;
+    color: #3498db;
+}
+
+.profile-btn i.fa-chevron-down {
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+.user-menu.logged-in .profile-btn:hover i.fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+.user-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    width: 200px;
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.user-dropdown.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.user-dropdown a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: #2c3e50;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.user-dropdown a:hover {
+    background: rgba(52, 152, 219, 0.1);
+    color: #3498db;
+}
+
+.user-dropdown i {
+    width: 20px;
+    text-align: center;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #ecf0f1;
+    margin: 8px 0;
+}
+
 /* Responsive Tasarım */
 @media screen and (max-width: 968px) {
     .menu-toggle {
@@ -225,6 +310,35 @@
     .user-menu a {
         width: 100%;
         text-align: center;
+    }
+
+    .user-menu.logged-in {
+        width: 100%;
+    }
+
+    .profile-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .user-dropdown {
+        position: static;
+        width: 100%;
+        box-shadow: none;
+        background: transparent;
+        padding: 0;
+        margin-top: 10px;
+    }
+
+    .user-dropdown a {
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 5px;
+        margin-bottom: 5px;
+    }
+
+    .user-dropdown a:hover {
+        background: rgba(52, 152, 219, 0.1);
     }
 }
 

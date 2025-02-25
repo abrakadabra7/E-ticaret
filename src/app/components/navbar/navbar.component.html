@@ -1,4 +1,4 @@
-<nav class="navbar">
+<div class="navbar">
     <div class="navbar-container">
         <div class="navbar-brand">
             <a routerLink="/">E-Ticaret</a>
@@ -21,7 +21,9 @@
                         <span class="cart-count">0</span>
                     </a>
                 </div>
-                <div class="user-menu">
+                
+                <!-- Giriş yapmamış kullanıcılar için -->
+                <div class="user-menu" *ngIf="!currentUser">
                     <button class="login-btn" (click)="openLoginModal()">
                         <i class="fas fa-sign-in-alt"></i>
                         Giriş Yap
@@ -31,10 +33,42 @@
                         Kayıt Ol
                     </button>
                 </div>
+
+                <!-- Giriş yapmış kullanıcılar için -->
+                <div class="user-menu logged-in" *ngIf="currentUser">
+                    <button class="profile-btn" (click)="toggleUserMenu()">
+                        <i class="fas fa-user-circle"></i>
+                        <span>{{ currentUser.fullName }}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="user-dropdown" [class.active]="isUserMenuOpen">
+                        <a routerLink="/profile" (click)="isUserMenuOpen = false">
+                            <i class="fas fa-user"></i>
+                            Profilim
+                        </a>
+                        <a routerLink="/orders" (click)="isUserMenuOpen = false">
+                            <i class="fas fa-box"></i>
+                            Siparişlerim
+                        </a>
+                        <a routerLink="/favorites" (click)="isUserMenuOpen = false">
+                            <i class="fas fa-heart"></i>
+                            Favorilerim
+                        </a>
+                        <a routerLink="/settings" (click)="isUserMenuOpen = false">
+                            <i class="fas fa-cog"></i>
+                            Ayarlar
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" (click)="logout(); $event.preventDefault()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            Çıkış Yap
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</nav>
+</div>
 
 <app-login-modal
     [isOpen]="isLoginModalOpen"
