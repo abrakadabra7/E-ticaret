@@ -1,0 +1,474 @@
+/* Ana konteyner */
+.products-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+/* Başlık bölümü */
+.products-header {
+  margin-bottom: 3rem;
+  text-align: center;
+  position: relative;
+  padding: 2rem 0;
+}
+
+.products-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, #3498db, #2ecc71);
+  border-radius: 3px;
+}
+
+.products-header h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.products-header p {
+  color: #666;
+  font-size: 1.1rem;
+}
+
+/* Filtreler ve sıralama */
+.filters-section {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  background: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 80px;
+  z-index: 10;
+  border: 1px solid rgba(52,152,219,0.1);
+}
+
+.search-box {
+  flex: 2;
+  min-width: 300px;
+  position: relative;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 1.2rem 1.5rem 1.2rem 3.5rem;
+  border: 2px solid #e9ecef;
+  border-radius: 15px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  background-color: #f8f9fa;
+  color: #2c3e50;
+}
+
+.search-box::before {
+  content: '\f002';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  left: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #95a5a6;
+  transition: all 0.3s ease;
+}
+
+.search-box:focus-within::before {
+  color: #3498db;
+}
+
+.search-box input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 4px rgba(52,152,219,0.1);
+  background-color: white;
+}
+
+.search-box input::placeholder {
+  color: #95a5a6;
+  font-weight: 500;
+}
+
+.sort-box {
+  flex: 1;
+  min-width: 250px;
+  position: relative;
+}
+
+.sort-box::before {
+  content: '\f161';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  left: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #95a5a6;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.sort-box:focus-within::before {
+  color: #3498db;
+}
+
+.sort-box select {
+  width: 100%;
+  padding: 1.2rem 1.5rem 1.2rem 3.5rem;
+  border: 2px solid #e9ecef;
+  border-radius: 15px;
+  font-size: 1.1rem;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  appearance: none;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+.sort-box::after {
+  content: '\f0d7';
+  font-family: 'Font Awesome 5 Free';
+  font-weight: 900;
+  position: absolute;
+  right: 1.2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  color: #95a5a6;
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.sort-box:focus-within::after {
+  color: #3498db;
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.sort-box select:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 0 4px rgba(52,152,219,0.1);
+  background-color: white;
+}
+
+.sort-box select option {
+  padding: 1rem;
+  font-size: 1rem;
+  background-color: white;
+  color: #2c3e50;
+}
+
+/* Ürün grid */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 1rem 0;
+}
+
+/* Ürün kartı */
+.product-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+  overflow: hidden;
+  transition: all 0.4s ease;
+  position: relative;
+  border: 1px solid #eee;
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.product-image {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+  background: #f8f9fa;
+}
+
+.product-image img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 1rem;
+  transition: transform 0.5s ease;
+}
+
+.product-card:hover .product-image img {
+  transform: scale(1.08);
+}
+
+.discount-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: linear-gradient(45deg, #e74c3c, #c0392b);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 1;
+}
+
+.product-info {
+  padding: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.product-name {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 0.75rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 3rem;
+  line-height: 1.4;
+}
+
+.product-description {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  line-height: 1.5;
+}
+
+.product-price {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 0;
+  border-top: 1px dashed #eee;
+  border-bottom: 1px dashed #eee;
+}
+
+.current-price {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #2ecc71;
+  letter-spacing: -1px;
+}
+
+.original-price {
+  font-size: 1rem;
+  color: #999;
+  text-decoration: line-through;
+}
+
+.stock-status {
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stock-status i {
+  font-size: 1rem;
+}
+
+.in-stock {
+  color: #2ecc71;
+}
+
+.out-of-stock {
+  color: #e74c3c;
+}
+
+.add-to-cart-btn {
+  width: 100%;
+  background: linear-gradient(45deg, #3498db, #2980b9);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.add-to-cart-btn:hover:not(:disabled) {
+  background: linear-gradient(45deg, #2980b9, #2c3e50);
+  transform: translateY(-2px);
+}
+
+.add-to-cart-btn:disabled {
+  background: linear-gradient(45deg, #bdc3c7, #95a5a6);
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.add-to-cart-btn i {
+  font-size: 1.2rem;
+}
+
+/* Yükleniyor animasyonu */
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid #e9ecef;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Hata mesajı */
+.error-message {
+  background: linear-gradient(45deg, #fff5f5, #fee2e2);
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-weight: 500;
+}
+
+.error-message i {
+  font-size: 1.5rem;
+}
+
+/* Boş durum */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.empty-state i {
+  font-size: 4rem;
+  color: #bdc3c7;
+  margin-bottom: 1.5rem;
+  opacity: 0.5;
+}
+
+.empty-state p {
+  color: #666;
+  font-size: 1.1rem;
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Responsive tasarım */
+@media (max-width: 1200px) {
+  .products-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .products-container {
+    padding: 1rem;
+  }
+
+  .products-header h1 {
+    font-size: 2rem;
+  }
+
+  .filters-section {
+    position: relative;
+    top: 0;
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+
+  .search-box,
+  .sort-box {
+    flex: 1 1 100%;
+  }
+
+  .search-box input,
+  .sort-box select {
+    padding: 1rem 1.5rem 1rem 3rem;
+    font-size: 1rem;
+  }
+
+  .search-box::before,
+  .sort-box::before,
+  .sort-box::after {
+    font-size: 1rem;
+    left: 1rem;
+  }
+
+  .sort-box::after {
+    right: 1rem;
+  }
+
+  .product-card {
+    border-radius: 15px;
+  }
+
+  .product-info {
+    padding: 1rem;
+  }
+
+  .current-price {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .products-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .products-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+} 

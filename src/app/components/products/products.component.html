@@ -1,0 +1,87 @@
+<!-- Ana konteyner -->
+<div class="products-container">
+  <!-- Başlık bölümü -->
+  <div class="products-header">
+    <h1>Ürünlerimiz</h1>
+    <p>En kaliteli ürünler, en uygun fiyatlarla sizlerle</p>
+  </div>
+
+  <!-- Filtreler ve Arama -->
+  <div class="filters-section">
+    <div class="search-box">
+      <input 
+        type="text" 
+        placeholder="Ürün ara..."
+        [(ngModel)]="searchTerm"
+        (input)="filterProducts()">
+    </div>
+    <div class="sort-box">
+      <select [(ngModel)]="sortOption" (change)="sortProducts()">
+        <option value="default">Varsayılan Sıralama</option>
+        <option value="price-asc">Fiyat (Düşükten Yükseğe)</option>
+        <option value="price-desc">Fiyat (Yüksekten Düşüğe)</option>
+        <option value="name-asc">İsim (A-Z)</option>
+        <option value="name-desc">İsim (Z-A)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Yükleniyor -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Hata Mesajı -->
+  <div *ngIf="error" class="error-message">
+    <i class="fas fa-exclamation-circle"></i>
+    {{ error }}
+  </div>
+
+  <!-- Ürün Grid -->
+  <div *ngIf="!isLoading && !error" class="products-grid">
+    <div *ngFor="let product of filteredProducts" class="product-card">
+      <!-- Ürün Resmi -->
+      <div class="product-image">
+        <img [src]="product.images[0] || '/assets/images/no-image.png'" [alt]="product.name">
+        <div *ngIf="calculateDiscount(product) > 0" class="discount-badge">
+          %{{ calculateDiscount(product) | number:'1.0-0' }}
+        </div>
+      </div>
+
+      <!-- Ürün Bilgileri -->
+      <div class="product-info">
+        <h3 class="product-name">{{ product.name }}</h3>
+        <p class="product-description">{{ product.description }}</p>
+        
+        <!-- Fiyat -->
+        <div class="product-price">
+          <span class="current-price">{{ product.price | currency:'TRY':'symbol-narrow':'1.2-2' }}</span>
+          <span *ngIf="product.original_price" class="original-price">
+            {{ product.original_price | currency:'TRY':'symbol-narrow':'1.2-2' }}
+          </span>
+        </div>
+
+        <!-- Stok Durumu -->
+        <div class="stock-status" [class.in-stock]="product.stock > 0" [class.out-of-stock]="product.stock === 0">
+          <i class="fas" [class.fa-check-circle]="product.stock > 0" [class.fa-times-circle]="product.stock === 0"></i>
+          {{ product.stock > 0 ? 'Stokta' : 'Tükendi' }}
+        </div>
+
+        <!-- Sepete Ekle Butonu -->
+        <button 
+          class="add-to-cart-btn" 
+          (click)="addToCart(product)"
+          [disabled]="product.stock === 0">
+          <i class="fas" [class.fa-cart-plus]="product.stock > 0" [class.fa-times]="product.stock === 0"></i>
+          {{ product.stock > 0 ? 'Sepete Ekle' : 'Tükendi' }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ürün Bulunamadı -->
+  <div *ngIf="!isLoading && !error && filteredProducts.length === 0" class="empty-state">
+    <i class="fas fa-box-open"></i>
+    <p>Henüz ürün eklenmemiş veya aradığınız kriterlere uygun ürün bulunamadı.</p>
+  </div>
+</div> 

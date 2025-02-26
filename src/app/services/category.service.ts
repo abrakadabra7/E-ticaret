@@ -142,6 +142,20 @@ export class CategoryService {
 
   async deleteCategory(id: string): Promise<void> {
     try {
+      console.log('Kategori silme işlemi başladı:', id);
+
+      // Önce bu kategoriye ait ürünleri kontrol et
+      const { data: products, error: productsError } = await this.supabase.instance
+        .from('products')
+        .select('id')
+        .eq('category_id', id);
+
+      if (productsError) throw productsError;
+
+      if (products && products.length > 0) {
+        throw new Error('Bu kategoriye ait ürünler var. Önce ürünleri silmeniz veya başka kategoriye taşımanız gerekiyor.');
+      }
+
       // Önce kategori resmini sil
       const { data: category } = await this.supabase.instance
         .from('categories')
@@ -152,10 +166,16 @@ export class CategoryService {
       if (category?.image_url) {
         const fileName = category.image_url.split('/').pop();
         if (fileName) {
-          await this.supabase.instance
+          console.log('Kategori resmi siliniyor:', fileName);
+          const { error: storageError } = await this.supabase.instance
             .storage
             .from('category-images')
             .remove([fileName]);
+
+          if (storageError) {
+            console.error('Resim silme hatası:', storageError);
+            // Resim silme hatası kritik değil, devam edebiliriz
+          }
         }
       }
 
@@ -165,7 +185,12 @@ export class CategoryService {
         .delete()
         .eq('id', id);
 
-      if (error) throw error;
+      if (error) {
+        console.error('Kategori silme hatası:', error);
+        throw error;
+      }
+
+      console.log('Kategori başarıyla silindi');
     } catch (error) {
       console.error('Kategori silinirken hata:', error);
       throw error;
