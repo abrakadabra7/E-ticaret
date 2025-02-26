@@ -47,7 +47,7 @@
 
   <!-- Ürün Grid -->
   <div *ngIf="!isLoading && !error" class="products-grid">
-    <div *ngFor="let product of filteredProducts" class="product-card">
+    <div *ngFor="let product of filteredProducts" class="product-card" [routerLink]="['/products', product.id]">
       <!-- Ürün Resmi -->
       <div class="product-image">
         <img [src]="product.images[0] || '/assets/images/no-image.png'" [alt]="product.name">
@@ -78,7 +78,7 @@
         <!-- Sepete Ekle Butonu -->
         <button 
           class="add-to-cart-btn" 
-          (click)="addToCart(product)"
+          (click)="addToCart(product); $event.stopPropagation()"
           [disabled]="product.stock === 0">
           <i class="fas" [class.fa-cart-plus]="product.stock > 0" [class.fa-times]="product.stock === 0"></i>
           {{ product.stock > 0 ? 'Sepete Ekle' : 'Tükendi' }}

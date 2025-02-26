@@ -4,11 +4,13 @@ import { AdminComponent } from './components/admin/admin.component';
 import { ProductsComponent } from './components/admin/products/products.component';
 import { ProductsComponent as UserProductsComponent } from './components/products/products.component';
 import { CategoriesComponent } from './components/admin/categories/categories.component';
+import { ProductDetailComponent } from './components/products/product-detail/product-detail.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'home', component: HomeComponent },
   { path: 'products', component: UserProductsComponent },
+  { path: 'products/:id', component: ProductDetailComponent },
   { path: 'category/:slug', component: UserProductsComponent },
   {
     path: 'admin',

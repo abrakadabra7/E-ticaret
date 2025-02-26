@@ -1,0 +1,99 @@
+<div class="product-detail-container">
+  <!-- Yükleniyor -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Hata Mesajı -->
+  <div *ngIf="error" class="error-message">
+    <i class="fas fa-exclamation-circle"></i>
+    {{ error }}
+  </div>
+
+  <!-- Ürün Detayları -->
+  <div *ngIf="product && !isLoading" class="product-content">
+    <!-- Sol Taraf - Resim Galerisi -->
+    <div class="product-gallery">
+      <div class="main-image">
+        <img [src]="product.images[selectedImageIndex] || '/assets/images/no-image.png'" [alt]="product.name">
+        <div *ngIf="calculateDiscount() > 0" class="discount-badge">
+          %{{ calculateDiscount() | number:'1.0-0' }}
+        </div>
+      </div>
+      <div class="thumbnail-list" *ngIf="product?.images && product.images.length > 1">
+        <div 
+          *ngFor="let image of product.images; let i = index"
+          class="thumbnail"
+          [class.active]="i === selectedImageIndex"
+          (click)="selectImage(i)">
+          <img [src]="image" [alt]="product.name + ' ' + (i + 1)">
+        </div>
+      </div>
+    </div>
+
+    <!-- Sağ Taraf - Ürün Bilgileri -->
+    <div class="product-info">
+      <!-- Kategori -->
+      <div class="product-category" *ngIf="product.category">
+        <i class="fas fa-tag"></i>
+        {{ product.category.name }}
+      </div>
+
+      <!-- Ürün Adı -->
+      <h1 class="product-name">{{ product.name }}</h1>
+      
+      <!-- Fiyat Bilgisi -->
+      <div class="product-price">
+        <div class="price-container">
+          <span class="current-price">{{ product.price | currency:'TRY':'symbol-narrow':'1.2-2' }}</span>
+          <span *ngIf="product.original_price" class="original-price">
+            {{ product.original_price | currency:'TRY':'symbol-narrow':'1.2-2' }}
+          </span>
+        </div>
+        <div *ngIf="calculateDiscount() > 0" class="discount-info">
+          %{{ calculateDiscount() | number:'1.0-0' }} indirim
+        </div>
+      </div>
+
+      <!-- Stok Durumu -->
+      <div class="stock-status" [class.in-stock]="product.stock > 0" [class.out-of-stock]="product.stock === 0">
+        <i class="fas" [class.fa-check-circle]="product.stock > 0" [class.fa-times-circle]="product.stock === 0"></i>
+        {{ product.stock > 0 ? product.stock + ' adet stokta' : 'Tükendi' }}
+      </div>
+
+      <!-- Ürün Açıklaması -->
+      <div class="product-description">
+        <h2>Ürün Açıklaması</h2>
+        <p>{{ product.description }}</p>
+      </div>
+
+      <!-- Ürün Özellikleri -->
+      <div class="product-specifications" *ngIf="product.specifications">
+        <h2>Teknik Özellikler</h2>
+        <div class="specifications-list">
+          <div class="specification-item" *ngFor="let spec of product.specifications | keyvalue">
+            <span class="spec-name">{{ spec.key }}</span>
+            <span class="spec-value">{{ spec.value }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Miktar Seçimi ve Sepete Ekleme -->
+      <div class="add-to-cart-section" *ngIf="product.stock > 0">
+        <div class="quantity-selector">
+          <button (click)="decreaseQuantity()" [disabled]="quantity <= 1">
+            <i class="fas fa-minus"></i>
+          </button>
+          <span>{{ quantity }}</span>
+          <button (click)="increaseQuantity()" [disabled]="quantity >= product.stock">
+            <i class="fas fa-plus"></i>
+          </button>
+        </div>
+        <button class="add-to-cart-btn" (click)="addToCart()">
+          <i class="fas fa-shopping-cart"></i>
+          Sepete Ekle
+        </button>
+      </div>
+    </div>
+  </div>
+</div> 

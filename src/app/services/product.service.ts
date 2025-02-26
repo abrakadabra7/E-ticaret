@@ -14,17 +14,43 @@ export class ProductService {
         .from('products')
         .select(`
           *,
-          category:categories (
-            id,
-            name
-          )
+          category:categories(*)
         `)
-        .order('created_at', { ascending: false });
+        .eq('is_active', true);
 
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
+
       return data || [];
     } catch (error) {
       console.error('Ürünler yüklenirken hata:', error);
+      throw error;
+    }
+  }
+
+  async getProductById(id: string): Promise<Product> {
+    try {
+      const { data, error } = await this.supabase.instance
+        .from('products')
+        .select(`
+          *,
+          category:categories(*)
+        `)
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      if (!data) {
+        throw new Error('Ürün bulunamadı');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Ürün detayı yüklenirken hata:', error);
       throw error;
     }
   }
