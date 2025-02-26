@@ -1,7 +1,7 @@
 <div class="products-page">
   <div class="header">
     <h1>Ürünler</h1>
-    <button class="btn-primary" routerLink="new">
+    <button class="btn-primary" (click)="openAddModal()">
       <i class="fas fa-plus"></i>
       Yeni Ürün
     </button>
@@ -48,4 +48,11 @@
       </tbody>
     </table>
   </div>
+
+  <app-add-product-modal
+    [isOpen]="isAddModalOpen"
+    [categories]="categories"
+    (closeModal)="closeAddModal()"
+    (saveProduct)="onSaveProduct($event)">
+  </app-add-product-modal>
 </div> 

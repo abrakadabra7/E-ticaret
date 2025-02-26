@@ -1,0 +1,96 @@
+<div class="modal-overlay" [class.active]="isOpen" (click)="onOverlayClick($event)">
+  <div class="modal-container" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Yeni Kategori Ekle</h2>
+      <button class="close-btn" (click)="closeModal.emit()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="error-message" *ngIf="errorMessage">
+      <i class="fas fa-exclamation-circle"></i>
+      {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+      <!-- Kategori Adı -->
+      <div class="form-group">
+        <label for="name">Kategori Adı</label>
+        <input 
+          type="text" 
+          id="name" 
+          formControlName="name" 
+          placeholder="Kategori adını girin"
+          (input)="generateSlug($event)">
+      </div>
+
+      <!-- Slug -->
+      <div class="form-group">
+        <label for="slug">SEO URL</label>
+        <input 
+          type="text" 
+          id="slug" 
+          formControlName="slug" 
+          placeholder="ornek-kategori-url">
+        <small class="help-text">Sadece küçük harf, rakam ve tire (-) kullanabilirsiniz</small>
+      </div>
+
+      <!-- Açıklama -->
+      <div class="form-group">
+        <label for="description">Açıklama</label>
+        <textarea 
+          id="description" 
+          formControlName="description" 
+          placeholder="Kategori açıklamasını girin" 
+          rows="4">
+        </textarea>
+      </div>
+
+      <!-- Resim -->
+      <div class="form-group">
+        <label>Kategori Görseli</label>
+        <div class="image-upload-container">
+          <div class="image-preview" *ngIf="imagePreviewUrl">
+            <img [src]="imagePreviewUrl" alt="Kategori görseli">
+            <button type="button" class="remove-image" (click)="removeImage()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="upload-button" *ngIf="!imagePreviewUrl">
+            <input 
+              type="file" 
+              id="image" 
+              accept="image/*" 
+              (change)="onFileSelected($event)" 
+              style="display: none">
+            <label for="image" class="upload-label">
+              <i class="fas fa-cloud-upload-alt"></i>
+              Görsel Yükle
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Durum -->
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="is_active">
+          <span>Kategori Aktif</span>
+        </label>
+      </div>
+
+      <!-- Kaydet Butonu -->
+      <button 
+        type="submit" 
+        class="submit-btn" 
+        [disabled]="categoryForm.invalid || isLoading">
+        <i class="fas" 
+           [class.fa-save]="!isLoading" 
+           [class.fa-spinner]="isLoading" 
+           [class.fa-spin]="isLoading">
+        </i>
+        <span>{{ isLoading ? 'Kaydediliyor...' : 'Kategoriyi Kaydet' }}</span>
+      </button>
+    </form>
+  </div>
+</div> 

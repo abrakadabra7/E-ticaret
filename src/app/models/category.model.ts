@@ -2,10 +2,10 @@ export interface Category {
   id: string;
   name: string;
   slug: string;
-  description?: string;
+  description: string;
   image_url?: string;
-  parent_id?: string;
-  parent?: Category;
+  image?: File;
+  is_active: boolean;
   created_at: string;
-  updated_at: string;
+  updated_at?: string;
 } 
