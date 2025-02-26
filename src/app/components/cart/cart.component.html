@@ -1,0 +1,96 @@
+<div class="cart-container">
+  <div class="cart-header">
+    <h1>Sepetim</h1>
+    <button *ngIf="cartItems.length > 0" class="clear-cart-btn" (click)="clearCart()">
+      <i class="fas fa-trash"></i>
+      Sepeti Temizle
+    </button>
+  </div>
+
+  <!-- Yükleniyor -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Sepet Boş -->
+  <div *ngIf="!isLoading && cartItems.length === 0" class="empty-cart">
+    <i class="fas fa-shopping-cart"></i>
+    <h2>Sepetiniz Boş</h2>
+    <p>Sepetinizde henüz ürün bulunmuyor.</p>
+    <button routerLink="/products" class="continue-shopping">
+      <i class="fas fa-arrow-left"></i>
+      Alışverişe Başla
+    </button>
+  </div>
+
+  <!-- Sepet Dolu -->
+  <div *ngIf="!isLoading && cartItems.length > 0" class="cart-content">
+    <!-- Ürün Listesi -->
+    <div class="cart-items">
+      <div *ngFor="let item of cartItems" class="cart-item">
+        <!-- Ürün Resmi -->
+        <div class="item-image">
+          <img [src]="item.product.images[0] || '/assets/images/no-image.png'" [alt]="item.product.name">
+        </div>
+
+        <!-- Ürün Bilgileri -->
+        <div class="item-details">
+          <h3 [routerLink]="['/products', item.product.id]">{{ item.product.name }}</h3>
+          <p class="item-price">{{ item.product.price | currency:'TRY':'symbol-narrow':'1.2-2' }}</p>
+          
+          <!-- Miktar Kontrolü -->
+          <div class="quantity-controls">
+            <button (click)="updateQuantity(item.product.id, item.quantity - 1)" [disabled]="item.quantity <= 1">
+              <i class="fas fa-minus"></i>
+            </button>
+            <span>{{ item.quantity }}</span>
+            <button (click)="updateQuantity(item.product.id, item.quantity + 1)" [disabled]="item.quantity >= item.product.stock">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Ürün Toplamı -->
+        <div class="item-total">
+          <p>Toplam:</p>
+          <p class="total-price">{{ calculateItemTotal(item) | currency:'TRY':'symbol-narrow':'1.2-2' }}</p>
+        </div>
+
+        <!-- Silme Butonu -->
+        <button class="remove-item" (click)="removeItem(item.product.id)">
+          <i class="fas fa-trash"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Sepet Özeti -->
+    <div class="cart-summary">
+      <h2>Sipariş Özeti</h2>
+      
+      <div class="summary-item">
+        <span>Ara Toplam</span>
+        <span>{{ cartTotal | currency:'TRY':'symbol-narrow':'1.2-2' }}</span>
+      </div>
+
+      <div class="summary-item">
+        <span>Kargo</span>
+        <span>Ücretsiz</span>
+      </div>
+
+      <div class="summary-total">
+        <span>Toplam</span>
+        <span>{{ cartTotal | currency:'TRY':'symbol-narrow':'1.2-2' }}</span>
+      </div>
+
+      <button class="checkout-btn" routerLink="/checkout" [disabled]="!cartItems.length">
+        <i class="fas fa-credit-card"></i>
+        Ödemeye Geç
+      </button>
+
+      <button class="continue-shopping" routerLink="/products">
+        <i class="fas fa-arrow-left"></i>
+        Alışverişe Devam Et
+      </button>
+    </div>
+  </div>
+</div> 

@@ -1,0 +1,322 @@
+<div class="checkout-container" [class.blur]="orderSuccess">
+  <!-- Adımlar -->
+  <div class="checkout-steps">
+    <div class="step" [class.active]="currentStep >= 1" [class.completed]="currentStep > 1">
+      <div class="step-number">1</div>
+      <div class="step-title">Teslimat Bilgileri</div>
+    </div>
+    <div class="step" [class.active]="currentStep >= 2" [class.completed]="currentStep > 2">
+      <div class="step-number">2</div>
+      <div class="step-title">Ödeme</div>
+    </div>
+    <div class="step" [class.active]="currentStep === 3">
+      <div class="step-number">3</div>
+      <div class="step-title">Onay</div>
+    </div>
+  </div>
+
+  <!-- Form ve Sepet Özeti -->
+  <div class="checkout-content">
+    <!-- Form Alanı -->
+    <div class="checkout-form">
+      <form [formGroup]="checkoutForm" (ngSubmit)="completeOrder()">
+        <!-- Adım 1: Teslimat Bilgileri -->
+        <div class="form-step" *ngIf="currentStep === 1">
+          <h2>Teslimat Bilgileri</h2>
+          
+          <div class="form-group">
+            <label for="fullName">Ad Soyad</label>
+            <input 
+              type="text" 
+              id="fullName" 
+              formControlName="fullName"
+              [class.error]="checkoutForm.get('fullName')?.invalid && checkoutForm.get('fullName')?.touched">
+            <span class="error-message" *ngIf="checkoutForm.get('fullName')?.invalid && checkoutForm.get('fullName')?.touched">
+              {{ getErrorMessage('fullName') }}
+            </span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">E-posta</label>
+              <input 
+                type="email" 
+                id="email" 
+                formControlName="email"
+                [class.error]="checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched">
+              <span class="error-message" *ngIf="checkoutForm.get('email')?.invalid && checkoutForm.get('email')?.touched">
+                {{ getErrorMessage('email') }}
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="phone">Telefon</label>
+              <input 
+                type="tel" 
+                id="phone" 
+                formControlName="phone"
+                placeholder="5XX XXX XXXX"
+                [class.error]="checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched">
+              <span class="error-message" *ngIf="checkoutForm.get('phone')?.invalid && checkoutForm.get('phone')?.touched">
+                {{ getErrorMessage('phone') }}
+              </span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Adres</label>
+            <textarea 
+              id="address" 
+              formControlName="address" 
+              rows="3"
+              [class.error]="checkoutForm.get('address')?.invalid && checkoutForm.get('address')?.touched">
+            </textarea>
+            <span class="error-message" *ngIf="checkoutForm.get('address')?.invalid && checkoutForm.get('address')?.touched">
+              {{ getErrorMessage('address') }}
+            </span>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city">İl</label>
+              <input 
+                type="text" 
+                id="city" 
+                formControlName="city"
+                [class.error]="checkoutForm.get('city')?.invalid && checkoutForm.get('city')?.touched">
+              <span class="error-message" *ngIf="checkoutForm.get('city')?.invalid && checkoutForm.get('city')?.touched">
+                {{ getErrorMessage('city') }}
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="district">İlçe</label>
+              <input 
+                type="text" 
+                id="district" 
+                formControlName="district"
+                [class.error]="checkoutForm.get('district')?.invalid && checkoutForm.get('district')?.touched">
+              <span class="error-message" *ngIf="checkoutForm.get('district')?.invalid && checkoutForm.get('district')?.touched">
+                {{ getErrorMessage('district') }}
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="zipCode">Posta Kodu</label>
+              <input 
+                type="text" 
+                id="zipCode" 
+                formControlName="zipCode"
+                [class.error]="checkoutForm.get('zipCode')?.invalid && checkoutForm.get('zipCode')?.touched">
+              <span class="error-message" *ngIf="checkoutForm.get('zipCode')?.invalid && checkoutForm.get('zipCode')?.touched">
+                {{ getErrorMessage('zipCode') }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Adım 2: Ödeme Bilgileri -->
+        <div class="form-step" *ngIf="currentStep === 2">
+          <h2>Ödeme Bilgileri</h2>
+
+          <div class="payment-methods">
+            <div class="payment-method" [class.active]="paymentMethod === 'card'" (click)="paymentMethod = 'card'">
+              <i class="fas fa-credit-card"></i>
+              <span>Kredi/Banka Kartı</span>
+            </div>
+            <div class="payment-method" [class.active]="paymentMethod === 'transfer'" (click)="paymentMethod = 'transfer'">
+              <i class="fas fa-university"></i>
+              <span>Havale/EFT</span>
+            </div>
+          </div>
+
+          <!-- Kredi Kartı Formu -->
+          <div class="card-form" *ngIf="paymentMethod === 'card'">
+            <div class="form-group">
+              <label for="cardNumber">Kart Numarası</label>
+              <input 
+                type="text" 
+                id="cardNumber" 
+                formControlName="cardNumber"
+                placeholder="XXXX XXXX XXXX XXXX"
+                [class.error]="checkoutForm.get('cardNumber')?.invalid && checkoutForm.get('cardNumber')?.touched">
+              <span class="error-message" *ngIf="checkoutForm.get('cardNumber')?.invalid && checkoutForm.get('cardNumber')?.touched">
+                {{ getErrorMessage('cardNumber') }}
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label for="cardName">Kart Üzerindeki İsim</label>
+              <input 
+                type="text" 
+                id="cardName" 
+                formControlName="cardName"
+                [class.error]="checkoutForm.get('cardName')?.invalid && checkoutForm.get('cardName')?.touched">
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Son Kullanma Tarihi</label>
+                <div class="expiry-inputs">
+                  <select formControlName="expiryMonth">
+                    <option value="">Ay</option>
+                    <option *ngFor="let month of [1,2,3,4,5,6,7,8,9,10,11,12]" [value]="month">
+                      {{month < 10 ? '0' + month : month}}
+                    </option>
+                  </select>
+                  <select formControlName="expiryYear">
+                    <option value="">Yıl</option>
+                    <option *ngFor="let year of [2024,2025,2026,2027,2028,2029,2030]" [value]="year">
+                      {{year}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="cvv">CVV</label>
+                <input 
+                  type="text" 
+                  id="cvv" 
+                  formControlName="cvv"
+                  maxlength="4"
+                  [class.error]="checkoutForm.get('cvv')?.invalid && checkoutForm.get('cvv')?.touched">
+                <span class="error-message" *ngIf="checkoutForm.get('cvv')?.invalid && checkoutForm.get('cvv')?.touched">
+                  {{ getErrorMessage('cvv') }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Havale/EFT Bilgileri -->
+          <div class="transfer-info" *ngIf="paymentMethod === 'transfer'">
+            <div class="bank-accounts">
+              <div class="bank-account">
+                <img src="assets/images/banks/garanti.png" alt="Garanti Bankası">
+                <div class="account-details">
+                  <h3>Garanti Bankası</h3>
+                  <p>Hesap Sahibi: E-Ticaret A.Ş.</p>
+                  <p>IBAN: TR12 3456 7890 1234 5678 9012 34</p>
+                </div>
+                <button class="copy-iban">
+                  <i class="fas fa-copy"></i>
+                  IBAN Kopyala
+                </button>
+              </div>
+            </div>
+            <div class="transfer-note">
+              <i class="fas fa-info-circle"></i>
+              <p>Havale/EFT işleminizi tamamladıktan sonra "Siparişi Tamamla" butonuna tıklayarak siparişinizi onaylayabilirsiniz.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Adım 3: Onay -->
+        <div class="form-step" *ngIf="currentStep === 3">
+          <h2>Sipariş Özeti</h2>
+          
+          <div class="order-summary">
+            <div class="summary-section">
+              <h3>Teslimat Bilgileri</h3>
+              <p><strong>Ad Soyad:</strong> {{checkoutForm.get('fullName')?.value}}</p>
+              <p><strong>Telefon:</strong> {{checkoutForm.get('phone')?.value}}</p>
+              <p><strong>Adres:</strong> {{checkoutForm.get('address')?.value}}</p>
+              <p>{{checkoutForm.get('district')?.value}}/{{checkoutForm.get('city')?.value}}</p>
+            </div>
+
+            <div class="summary-section">
+              <h3>Ödeme Yöntemi</h3>
+              <p>{{paymentMethod === 'card' ? 'Kredi/Banka Kartı' : 'Havale/EFT'}}</p>
+            </div>
+
+            <div class="summary-section">
+              <h3>Ürünler</h3>
+              <div class="cart-items-summary">
+                <div *ngFor="let item of cartItems" class="cart-item-summary">
+                  <span>{{item.product.name}} x {{item.quantity}}</span>
+                  <span>{{item.product.price * item.quantity | currency:'TRY':'symbol-narrow':'1.2-2'}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form Kontrolleri -->
+        <div class="form-controls">
+          <button 
+            type="button" 
+            class="btn-secondary" 
+            (click)="previousStep()"
+            *ngIf="currentStep > 1">
+            <i class="fas fa-arrow-left"></i>
+            Geri
+          </button>
+
+          <button 
+            type="button" 
+            class="btn-primary" 
+            (click)="nextStep()"
+            *ngIf="currentStep < 3"
+            [disabled]="!validateCurrentStep()">
+            İleri
+            <i class="fas fa-arrow-right"></i>
+          </button>
+
+          <button 
+            type="submit" 
+            class="btn-success" 
+            *ngIf="currentStep === 3"
+            [disabled]="isLoading">
+            <i class="fas" [class.fa-check]="!isLoading" [class.fa-spinner]="isLoading" [class.fa-spin]="isLoading"></i>
+            {{isLoading ? 'İşleniyor...' : 'Siparişi Tamamla'}}
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Sepet Özeti -->
+    <div class="cart-summary">
+      <h2>Sipariş Özeti</h2>
+      
+      <div class="cart-items-preview">
+        <div *ngFor="let item of cartItems" class="cart-item-preview">
+          <img [src]="item.product.images[0] || '/assets/images/no-image.png'" [alt]="item.product.name">
+          <div class="item-details">
+            <h4>{{item.product.name}}</h4>
+            <p>{{item.quantity}} adet</p>
+            <p class="item-price">{{item.product.price * item.quantity | currency:'TRY':'symbol-narrow':'1.2-2'}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-item">
+        <span>Ara Toplam</span>
+        <span>{{cartTotal | currency:'TRY':'symbol-narrow':'1.2-2'}}</span>
+      </div>
+
+      <div class="summary-item">
+        <span>Kargo</span>
+        <span>Ücretsiz</span>
+      </div>
+
+      <div class="summary-total">
+        <span>Toplam</span>
+        <span>{{cartTotal | currency:'TRY':'symbol-narrow':'1.2-2'}}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sipariş Başarılı -->
+  <div class="success-message" *ngIf="orderSuccess">
+    <div class="success-content">
+      <i class="fas fa-check-circle"></i>
+      <h2>Siparişiniz Başarıyla Alındı!</h2>
+      <p>Siparişiniz başarıyla oluşturuldu. Siparişlerim sayfasına yönlendiriliyorsunuz...</p>
+      <div class="loading-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
+</div> 

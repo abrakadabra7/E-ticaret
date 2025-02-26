@@ -1,0 +1,58 @@
+<div class="orders-container">
+  <div class="orders-header">
+    <h1>Siparişlerim</h1>
+  </div>
+
+  <!-- Yükleniyor -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Sipariş Yok -->
+  <div *ngIf="!isLoading && orders.length === 0" class="empty-orders">
+    <i class="fas fa-box-open"></i>
+    <h2>Henüz Siparişiniz Bulunmuyor</h2>
+    <p>Alışveriş yapmak için aşağıdaki butona tıklayabilirsiniz.</p>
+    <button routerLink="/products" class="shop-now-btn">
+      <i class="fas fa-shopping-cart"></i>
+      Alışverişe Başla
+    </button>
+  </div>
+
+  <!-- Siparişler Listesi -->
+  <div *ngIf="!isLoading && orders.length > 0" class="orders-list">
+    <div *ngFor="let order of orders" class="order-card">
+      <div class="order-header">
+        <div class="order-info">
+          <span class="order-number">Sipariş #{{ order.id }}</span>
+          <span class="order-date">{{ order.created_at | date:'dd.MM.yyyy HH:mm' }}</span>
+        </div>
+        <div class="order-status" [class]="order.status">
+          {{ getStatusText(order.status) }}
+        </div>
+      </div>
+
+      <div class="order-items">
+        <div *ngFor="let item of order.items" class="order-item">
+          <img [src]="item.product.images[0]" [alt]="item.product.name">
+          <div class="item-details">
+            <h3>{{ item.product.name }}</h3>
+            <p class="item-quantity">{{ item.quantity }} adet</p>
+            <p class="item-price">{{ item.price | currency:'TRY':'symbol-narrow':'1.2-2' }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="order-footer">
+        <div class="order-total">
+          <span>Toplam:</span>
+          <span class="total-amount">{{ order.total | currency:'TRY':'symbol-narrow':'1.2-2' }}</span>
+        </div>
+        <button class="details-btn" [routerLink]="['/orders', order.id]">
+          <i class="fas fa-eye"></i>
+          Detayları Görüntüle
+        </button>
+      </div>
+    </div>
+  </div>
+</div> 

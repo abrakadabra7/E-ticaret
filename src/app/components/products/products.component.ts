@@ -6,6 +6,7 @@ import { Product } from '../../models/product.model';
 import { Category } from '../../models/category.model';
 import { ProductService } from '../../services/product.service';
 import { CategoryService } from '../../services/category.service';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-products',
@@ -24,10 +25,12 @@ export class ProductsComponent implements OnInit {
   searchTerm = '';
   sortOption = 'default';
   categorySlug: string | null = null;
+  addingToCart: { [key: string]: boolean } = {};
 
   constructor(
     private productService: ProductService,
     private categoryService: CategoryService,
+    private cartService: CartService,
     private route: ActivatedRoute
   ) {}
 
@@ -120,8 +123,18 @@ export class ProductsComponent implements OnInit {
     return 0;
   }
 
-  addToCart(product: Product) {
-    // TODO: Sepete ekleme işlemi burada yapılacak
-    console.log('Ürün sepete eklendi:', product);
+  async addToCart(product: Product) {
+    if (this.addingToCart[product.id]) return;
+
+    try {
+      this.addingToCart[product.id] = true;
+      this.cartService.addToCart(product, 1);
+      alert('Ürün sepete eklendi!');
+    } catch (error) {
+      console.error('Sepete eklenirken hata:', error);
+      alert('Ürün sepete eklenirken bir hata oluştu!');
+    } finally {
+      this.addingToCart[product.id] = false;
+    }
   }
 } 

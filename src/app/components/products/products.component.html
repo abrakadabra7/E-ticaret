@@ -79,9 +79,14 @@
         <button 
           class="add-to-cart-btn" 
           (click)="addToCart(product); $event.stopPropagation()"
-          [disabled]="product.stock === 0">
-          <i class="fas" [class.fa-cart-plus]="product.stock > 0" [class.fa-times]="product.stock === 0"></i>
-          {{ product.stock > 0 ? 'Sepete Ekle' : 'Tükendi' }}
+          [disabled]="product.stock === 0 || addingToCart[product.id]">
+          <i class="fas" 
+             [class.fa-cart-plus]="!addingToCart[product.id] && product.stock > 0"
+             [class.fa-spinner]="addingToCart[product.id]"
+             [class.fa-spin]="addingToCart[product.id]"
+             [class.fa-times]="product.stock === 0">
+          </i>
+          {{ product.stock === 0 ? 'Tükendi' : (addingToCart[product.id] ? 'Ekleniyor...' : 'Sepete Ekle') }}
         </button>
       </div>
     </div>

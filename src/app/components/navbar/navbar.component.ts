@@ -4,6 +4,7 @@ import { RouterModule } from '@angular/router';
 import { LoginModalComponent } from '../auth/login-modal/login-modal.component';
 import { RegisterModalComponent } from '../auth/register-modal/register-modal.component';
 import { AuthService } from '../../services/auth.service';
+import { CartService } from '../../services/cart.service';
 import { User } from '../../models/user.model';
 
 @Component({
@@ -24,14 +25,23 @@ export class NavbarComponent implements OnInit {
   isRegisterModalOpen = false;
   currentUser: User | null = null;
   isUserMenuOpen = false;
+  cartItemCount = 0;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private cartService: CartService
+  ) {}
 
   ngOnInit() {
     // Kullanıcı durumunu takip et
     this.authService.currentUser$.subscribe(
       user => this.currentUser = user
     );
+
+    // Sepet durumunu takip et
+    this.cartService.cart$.subscribe(() => {
+      this.cartItemCount = this.cartService.getCartItemCount();
+    });
   }
 
   toggleMenu() {

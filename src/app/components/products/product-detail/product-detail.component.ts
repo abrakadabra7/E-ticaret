@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from '../../../models/product.model';
 import { ProductService } from '../../../services/product.service';
+import { CartService } from '../../../services/cart.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -18,11 +19,13 @@ export class ProductDetailComponent implements OnInit {
   error: string | null = null;
   selectedImageIndex = 0;
   quantity = 1;
+  addingToCart = false;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService
+    private productService: ProductService,
+    private cartService: CartService
   ) {}
 
   ngOnInit() {
@@ -77,13 +80,23 @@ export class ProductDetailComponent implements OnInit {
     return 0;
   }
 
-  addToCart(): void {
-    if (this.product) {
-      // TODO: Sepete ekleme işlemi burada yapılacak
-      console.log('Sepete eklendi:', {
-        product: this.product,
-        quantity: this.quantity
-      });
+  async addToCart(): Promise<void> {
+    if (this.product && !this.addingToCart) {
+      try {
+        this.addingToCart = true;
+        this.cartService.addToCart(this.product, this.quantity);
+        
+        // Başarılı bildirim göster
+        alert('Ürün başarıyla sepete eklendi!');
+        
+        // Miktarı sıfırla
+        this.quantity = 1;
+      } catch (error) {
+        console.error('Sepete eklenirken hata:', error);
+        alert('Ürün sepete eklenirken bir hata oluştu!');
+      } finally {
+        this.addingToCart = false;
+      }
     }
   }
 } 
