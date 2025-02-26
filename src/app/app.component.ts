@@ -1,9 +1,10 @@
 import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet, NavigationEnd } from '@angular/router';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SupabaseService } from './services/supabase.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private supabase: SupabaseService,
+    private router: Router,
     @Inject(PLATFORM_ID) platformId: Object
   ) {
     this.isBrowser = isPlatformBrowser(platformId);
@@ -42,6 +44,13 @@ export class AppComponent implements OnInit {
 
   async ngOnInit() {
     if (this.isBrowser) {
+      // Sayfa değişimlerini dinle
+      this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe(() => {
+        window.scrollTo(0, 0);
+      });
+
       try {
         const isConnected = await this.supabase.testConnection();
         console.log('Supabase bağlantı durumu:', isConnected);

@@ -15,13 +15,21 @@
         [(ngModel)]="searchTerm"
         (input)="filterProducts()">
     </div>
+
     <div class="sort-box">
-      <select [(ngModel)]="sortOption" (change)="sortProducts()">
-        <option value="default">Varsayılan Sıralama</option>
-        <option value="price-asc">Fiyat (Düşükten Yükseğe)</option>
-        <option value="price-desc">Fiyat (Yüksekten Düşüğe)</option>
-        <option value="name-asc">İsim (A-Z)</option>
-        <option value="name-desc">İsim (Z-A)</option>
+      <select [(ngModel)]="selectedCategory" (change)="filterProducts()">
+        <option value="">Tüm Kategoriler</option>
+        <option *ngFor="let category of categories" [value]="category.id">
+          {{ category.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="sort-box">
+      <select [(ngModel)]="sortOption" (change)="filterProducts()">
+        <option value="default">Varsayılan</option>
+        <option value="price-asc">Fiyat (Düşük - Yüksek)</option>
+        <option value="price-desc">Fiyat (Yüksek - Düşük)</option>
       </select>
     </div>
   </div>

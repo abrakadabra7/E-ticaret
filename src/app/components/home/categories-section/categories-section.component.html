@@ -3,7 +3,7 @@
         <h2>Kategoriler</h2>
     </div>
     <div class="categories-grid">
-        <div class="category-card">
+        <div class="category-card" (click)="goToCategory('bilgisayarlar')">
             <img src="assets/images/bilgisayarlar.jpg" alt="Bilgisayarlar">
             <div class="category-content">
                 <i class="fas fa-laptop"></i>
@@ -11,7 +11,7 @@
                 <p>Dizüstü, Masaüstü ve Aksesuarlar</p>
             </div>
         </div>
-        <div class="category-card">
+        <div class="category-card" (click)="goToCategory('telefonlar')">
             <img src="assets/images/telefonlar.jpg" alt="Telefonlar">
             <div class="category-content">
                 <i class="fas fa-mobile-alt"></i>
@@ -19,7 +19,7 @@
                 <p>Akıllı Telefonlar ve Aksesuarlar</p>
             </div>
         </div>
-        <div class="category-card">
+        <div class="category-card" (click)="goToCategory('gaming')">
             <img src="assets/images/gaming.jpg" alt="Gaming">
             <div class="category-content">
                 <i class="fas fa-gamepad"></i>
@@ -27,7 +27,7 @@
                 <p>Oyun Ekipmanları ve Aksesuarlar</p>
             </div>
         </div>
-        <div class="category-card">
+        <div class="category-card" (click)="goToCategory('aksesuarlar')">
             <img src="assets/images/aksesuarlar.jpg" alt="Aksesuarlar">
             <div class="category-content">
                 <i class="fas fa-headphones"></i>

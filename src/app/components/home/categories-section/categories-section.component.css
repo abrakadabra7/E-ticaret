@@ -1,19 +1,17 @@
 .categories-section {
-    padding: 80px 0;
-    background: #f8f9fa;
+    padding: 4rem 0;
+    background-color: #f8f9fa;
 }
 
 .section-title {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 3rem;
 }
 
 .section-title h2 {
     font-size: 2.5rem;
     color: #2c3e50;
-    position: relative;
-    display: inline-block;
-    margin-bottom: 20px;
+    font-weight: 700;
 }
 
 .section-title h2::after {
@@ -30,25 +28,26 @@
 .categories-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 30px;
-    padding: 0 20px;
+    gap: 2rem;
+    padding: 0 2rem;
     max-width: 1200px;
     margin: 0 auto;
 }
 
 .category-card {
     position: relative;
-    border-radius: 15px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
+    cursor: pointer;
+    background-color: white;
     height: 300px;
-    width: 100%;
 }
 
 .category-card:hover {
     transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(52, 152, 219, 0.2);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
 }
 
 .category-card img {
@@ -67,78 +66,47 @@
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 30px;
-    background: linear-gradient(
-        to top,
-        rgba(0, 0, 0, 0.8) 0%,
-        rgba(0, 0, 0, 0.4) 60%,
-        transparent 100%
-    );
+    padding: 1.5rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
     color: white;
-    transform: translateY(0);
-    transition: all 0.3s ease;
-}
-
-.category-card:hover .category-content {
-    transform: translateY(-10px);
+    text-align: center;
 }
 
 .category-content i {
-    font-size: 2.5rem;
-    margin-bottom: 15px;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
     color: #3498db;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .category-content h3 {
     font-size: 1.5rem;
+    margin: 0.5rem 0;
     font-weight: 600;
-    margin: 0 0 10px 0;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .category-content p {
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin: 0;
     opacity: 0.9;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-}
-
-@media (max-width: 992px) {
-    .categories-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 20px;
-    }
 }
 
 @media (max-width: 768px) {
-    .categories-section {
-        padding: 60px 0;
-    }
-
-    .section-title h2 {
-        font-size: 2rem;
-    }
-
     .categories-grid {
         grid-template-columns: 1fr;
-        gap: 20px;
+        padding: 0 1rem;
     }
 
     .category-card {
         height: 250px;
-    }
-
-    .category-content {
-        padding: 20px;
-    }
-
-    .category-content i {
-        font-size: 2rem;
+        margin-bottom: 1rem;
     }
 
     .category-content h3 {
-        font-size: 1.25rem;
+        font-size: 1.2rem;
+    }
+
+    .category-content p {
+        font-size: 0.8rem;
     }
 }
 
