@@ -1,0 +1,87 @@
+<div class="profile-container">
+  <!-- Yükleniyor -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Profil İçeriği -->
+  <div *ngIf="!isLoading && currentUser" class="profile-content">
+    <!-- Profil Başlığı -->
+    <div class="profile-header">
+      <div class="profile-avatar">
+        <i class="fas fa-user-circle"></i>
+      </div>
+      <div class="profile-info">
+        <h1>{{ currentUser.fullName }}</h1>
+        <p>{{ currentUser.email }}</p>
+      </div>
+    </div>
+
+    <!-- Sekmeler -->
+    <div class="profile-tabs">
+      <button 
+        [class.active]="activeTab === 'profile'"
+        (click)="setActiveTab('profile')">
+        <i class="fas fa-user"></i>
+        Profil Bilgileri
+      </button>
+      <button 
+        [class.active]="activeTab === 'orders'"
+        (click)="setActiveTab('orders')">
+        <i class="fas fa-box"></i>
+        Siparişlerim
+      </button>
+      <button 
+        [class.active]="activeTab === 'favorites'"
+        (click)="setActiveTab('favorites')">
+        <i class="fas fa-heart"></i>
+        Favorilerim
+      </button>
+    </div>
+
+    <!-- Sekme İçerikleri -->
+    <div class="tab-content">
+      <!-- Profil Bilgileri -->
+      <div *ngIf="activeTab === 'profile'" class="profile-details">
+        <div class="info-group">
+          <label>Ad Soyad</label>
+          <p>{{ currentUser.fullName }}</p>
+        </div>
+        <div class="info-group">
+          <label>E-posta</label>
+          <p>{{ currentUser.email }}</p>
+        </div>
+        <div class="info-group">
+          <label>Üyelik Tarihi</label>
+          <p>{{ currentUser.createdAt | date:'dd.MM.yyyy' }}</p>
+        </div>
+        <button class="edit-profile-btn">
+          <i class="fas fa-edit"></i>
+          Profili Düzenle
+        </button>
+      </div>
+
+      <!-- Siparişler -->
+      <div *ngIf="activeTab === 'orders'" class="orders-section">
+        <app-orders></app-orders>
+      </div>
+
+      <!-- Favoriler -->
+      <div *ngIf="activeTab === 'favorites'" class="favorites-section">
+        <h2>Favorilerim</h2>
+        <!-- Favori ürünler buraya gelecek -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Giriş Yapılmamış -->
+  <div *ngIf="!isLoading && !currentUser" class="not-logged-in">
+    <i class="fas fa-user-lock"></i>
+    <h2>Giriş Yapmanız Gerekiyor</h2>
+    <p>Profilinizi görüntülemek için lütfen giriş yapın.</p>
+    <button class="login-btn" routerLink="/login">
+      <i class="fas fa-sign-in-alt"></i>
+      Giriş Yap
+    </button>
+  </div>
+</div> 
