@@ -1,38 +1,27 @@
-<section class="categories-section">
+<section class="categories-section" id="categories">
     <div class="section-title">
         <h2>Kategoriler</h2>
     </div>
-    <div class="categories-grid">
-        <div class="category-card" (click)="goToCategory('bilgisayarlar')">
-            <img src="assets/images/bilgisayarlar.jpg" alt="Bilgisayarlar">
+
+    <!-- Yükleniyor -->
+    <div *ngIf="isLoading" class="loading-spinner">
+        <div class="spinner"></div>
+    </div>
+
+    <!-- Hata Mesajı -->
+    <div *ngIf="error" class="error-message">
+        <i class="fas fa-exclamation-circle"></i>
+        {{ error }}
+    </div>
+
+    <!-- Kategoriler Grid -->
+    <div *ngIf="!isLoading && !error" class="categories-grid">
+        <div class="category-card" *ngFor="let category of categories" (click)="goToCategory(category.slug)">
+            <img [src]="category.image_url || '/assets/images/no-image.png'" [alt]="category.name">
             <div class="category-content">
-                <i class="fas fa-laptop"></i>
-                <h3>Bilgisayarlar</h3>
-                <p>Dizüstü, Masaüstü ve Aksesuarlar</p>
-            </div>
-        </div>
-        <div class="category-card" (click)="goToCategory('telefonlar')">
-            <img src="assets/images/telefonlar.jpg" alt="Telefonlar">
-            <div class="category-content">
-                <i class="fas fa-mobile-alt"></i>
-                <h3>Telefonlar</h3>
-                <p>Akıllı Telefonlar ve Aksesuarlar</p>
-            </div>
-        </div>
-        <div class="category-card" (click)="goToCategory('gaming')">
-            <img src="assets/images/gaming.jpg" alt="Gaming">
-            <div class="category-content">
-                <i class="fas fa-gamepad"></i>
-                <h3>Gaming</h3>
-                <p>Oyun Ekipmanları ve Aksesuarlar</p>
-            </div>
-        </div>
-        <div class="category-card" (click)="goToCategory('aksesuarlar')">
-            <img src="assets/images/aksesuarlar.jpg" alt="Aksesuarlar">
-            <div class="category-content">
-                <i class="fas fa-headphones"></i>
-                <h3>Aksesuarlar</h3>
-                <p>Kulaklık, Mouse ve Diğer Aksesuarlar</p>
+                <i class="fas fa-shopping-bag"></i>
+                <h3>{{ category.name }}</h3>
+                <p>{{ category.description }}</p>
             </div>
         </div>
     </div>

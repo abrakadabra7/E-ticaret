@@ -1,85 +1,344 @@
 .campaigns-section {
-    padding: 60px 0;
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+    color: #fff;
 }
 
-.section-title {
+.section-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 3rem;
 }
 
-.section-title h2 {
-    font-size: 32px;
-    color: #2c3e50;
-    position: relative;
+.section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, #00f2fe, #4facfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     display: inline-block;
 }
 
-.section-title h2::after {
+.section-header p {
+    color: #b3b3b3;
+    font-size: 1.1rem;
+}
+
+.campaigns-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Ana Kampanya Stili */
+.campaign-spotlight {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.campaign-spotlight::before {
     content: '';
     position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 3px;
-    background-color: #3498db;
-}
-
-.campaigns-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-    padding: 0 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.campaign-card {
-    position: relative;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.campaign-card img {
-    width: 100%;
-    height: 300px;
-    object-fit: cover;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(0,242,254,0.1) 0%, rgba(79,172,254,0.1) 100%);
+    z-index: 1;
 }
 
 .campaign-content {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 20px;
-    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-    color: white;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
-.secondary-button {
-    background: transparent;
-    color: white;
-    border: 2px solid white;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
+.campaign-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #4facfe;
+    margin-bottom: 1.5rem;
+}
+
+.pulse {
+    width: 8px;
+    height: 8px;
+    background-color: #4facfe;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.campaign-content h3 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.campaign-details {
+    margin-bottom: 2rem;
+}
+
+.price-info {
+    margin-bottom: 1rem;
+}
+
+.discount {
+    display: inline-block;
+    background: rgba(255, 87, 87, 0.2);
+    color: #ff5757;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.prices {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.new-price {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.old-price {
+    font-size: 1.2rem;
+    color: #888;
+    text-decoration: line-through;
+}
+
+.stock-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.stock-bar {
+    height: 4px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.stock-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #00f2fe, #4facfe);
+    border-radius: 2px;
+}
+
+.stock-info span {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.action-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(90deg, #00f2fe, #4facfe);
+    color: #fff;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.secondary-button:hover {
-    background: white;
-    color: #2c3e50;
+.action-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(79,172,254,0.3);
+}
+
+.campaign-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.campaign-image img {
+    max-width: 100%;
+    height: auto;
+    transform: perspective(1000px) rotateY(-15deg);
+    transition: transform 0.3s ease;
+}
+
+.campaign-spotlight:hover .campaign-image img {
+    transform: perspective(1000px) rotateY(-5deg);
+}
+
+/* Kampanya Kartları */
+.campaign-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.campaign-card {
+    background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+    border-radius: 15px;
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.campaign-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-content {
+    position: relative;
+    z-index: 2;
+}
+
+.card-badge {
+    display: inline-block;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+}
+
+.card-badge.gaming {
+    background: rgba(255, 87, 87, 0.2);
+    color: #ff5757;
+}
+
+.card-badge.phones {
+    background: rgba(79, 172, 254, 0.2);
+    color: #4facfe;
+}
+
+.card-badge.accessories {
+    background: rgba(130, 87, 229, 0.2);
+    color: #8257e5;
+}
+
+.card-content h4 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.card-content p {
+    color: #b3b3b3;
+    margin-bottom: 1rem;
+}
+
+.card-cta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #4facfe;
+    font-weight: 500;
+}
+
+.card-image {
+    position: absolute;
+    right: -20px;
+    bottom: -20px;
+    width: 150px;
+    height: 150px;
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.campaign-card:hover .card-image {
+    opacity: 0.8;
+    transform: scale(1.1);
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(79,172,254,0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(79,172,254,0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(79,172,254,0);
+    }
+}
+
+@media (max-width: 1200px) {
+    .campaign-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 968px) {
+    .campaign-spotlight {
+        grid-template-columns: 1fr;
+    }
+
+    .campaign-image {
+        order: -1;
+    }
+
+    .campaign-image img {
+        transform: none;
+        max-width: 80%;
+    }
+
+    .campaign-spotlight:hover .campaign-image img {
+        transform: none;
+    }
 }
 
 @media (max-width: 768px) {
-    .section-title h2 {
-        font-size: 28px;
+    .section-header h2 {
+        font-size: 2rem;
     }
 
-    .campaigns-grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 20px;
+    .campaign-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .campaign-content h3 {
+        font-size: 2rem;
+    }
+
+    .new-price {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .campaign-spotlight {
+        padding: 1.5rem;
+    }
+
+    .campaign-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .new-price {
+        font-size: 1.5rem;
+    }
+
+    .action-button {
+        width: 100%;
+        justify-content: center;
     }
 }

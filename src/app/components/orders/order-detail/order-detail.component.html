@@ -1,0 +1,86 @@
+<div class="order-detail-container">
+  <!-- Yükleniyor -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Hata Mesajı -->
+  <div *ngIf="error" class="error-message">
+    <i class="fas fa-exclamation-circle"></i>
+    {{ error }}
+  </div>
+
+  <!-- Sipariş Detayları -->
+  <div *ngIf="!isLoading && !error && order" class="order-content">
+    <div class="order-header">
+      <h1>Sipariş Detayları</h1>
+      <div class="order-info">
+        <span class="order-number">Sipariş #{{ order.id }}</span>
+        <span class="order-date">{{ order.created_at | date:'dd.MM.yyyy HH:mm' }}</span>
+        <div class="order-status" [class]="getStatusClass(order.status)">
+          {{ getStatusText(order.status) }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Teslimat Bilgileri -->
+    <div class="delivery-info">
+      <h2>Teslimat Bilgileri</h2>
+      <div class="info-content">
+        <p><strong>Ad Soyad:</strong> {{ order.shipping_address.fullName }}</p>
+        <p><strong>E-posta:</strong> {{ order.shipping_address.email }}</p>
+        <p><strong>Telefon:</strong> {{ order.shipping_address.phone }}</p>
+        <p><strong>Adres:</strong> {{ order.shipping_address.address }}</p>
+        <p><strong>İl/İlçe:</strong> {{ order.shipping_address.city }}/{{ order.shipping_address.district }}</p>
+        <p><strong>Posta Kodu:</strong> {{ order.shipping_address.zipCode }}</p>
+      </div>
+    </div>
+
+    <!-- Sipariş Ürünleri -->
+    <div class="order-items">
+      <h2>Sipariş Edilen Ürünler</h2>
+      <div class="items-list">
+        <div *ngFor="let item of order.items" class="order-item">
+          <div class="item-image">
+            <img [src]="item.product.images[0]" [alt]="item.product.name">
+          </div>
+          <div class="item-details">
+            <h3>{{ item.product.name }}</h3>
+            <p class="item-description">{{ item.product.description }}</p>
+            <div class="item-meta">
+              <span>{{ item.quantity }} adet</span>
+              <span>{{ item.product.price | currency:'TRY':'symbol-narrow':'1.2-2' }}</span>
+            </div>
+            <button 
+              *ngIf="canRequestRefund(order.status)"
+              class="refund-btn"
+              [disabled]="processingRefund[item.product.id]"
+              (click)="initiateRefund(item.product.id)">
+              <span *ngIf="!processingRefund[item.product.id]">İade Talebi Oluştur</span>
+              <span *ngIf="processingRefund[item.product.id]">İşleniyor...</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sipariş Özeti -->
+    <div class="order-summary">
+      <h2>Sipariş Özeti</h2>
+      <div class="summary-content">
+        <div class="summary-row">
+          <span>Ara Toplam</span>
+          <span>{{ order.total | currency:'TRY':'symbol-narrow':'1.2-2' }}</span>
+        </div>
+        <div class="summary-row">
+          <span>Kargo</span>
+          <span>Ücretsiz</span>
+        </div>
+        <div class="summary-row total">
+          <span>Toplam</span>
+          <span>{{ order.total | currency:'TRY':'symbol-narrow':'1.2-2' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

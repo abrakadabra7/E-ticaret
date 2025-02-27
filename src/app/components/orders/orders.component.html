@@ -11,12 +11,12 @@
   <!-- Sipariş Yok -->
   <div *ngIf="!isLoading && orders.length === 0" class="empty-orders">
     <i class="fas fa-box-open"></i>
-    <h2>Henüz Siparişiniz Bulunmuyor</h2>
-    <p>Alışveriş yapmak için aşağıdaki butona tıklayabilirsiniz.</p>
-    <button routerLink="/products" class="shop-now-btn">
+    <h2>Henüz siparişiniz bulunmuyor</h2>
+    <p>Alışverişe başlayarak ilk siparişinizi oluşturabilirsiniz.</p>
+    <a routerLink="/products" class="shop-now-btn">
       <i class="fas fa-shopping-cart"></i>
       Alışverişe Başla
-    </button>
+    </a>
   </div>
 
   <!-- Siparişler Listesi -->
@@ -48,10 +48,10 @@
           <span>Toplam:</span>
           <span class="total-amount">{{ order.total | currency:'TRY':'symbol-narrow':'1.2-2' }}</span>
         </div>
-        <button class="details-btn" [routerLink]="['/orders', order.id]">
+        <a [routerLink]="['/orders', order.id]" class="details-btn">
           <i class="fas fa-eye"></i>
           Detayları Görüntüle
-        </button>
+        </a>
       </div>
     </div>
   </div>

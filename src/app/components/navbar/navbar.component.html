@@ -1,37 +1,48 @@
 <div class="navbar">
     <div class="navbar-container">
+        <!-- Sol Kısım -->
         <div class="navbar-brand">
             <a routerLink="/">E-Ticaret</a>
         </div>
-        <div class="menu-toggle" (click)="toggleMenu()">
+
+        <!-- Mobil Menü Butonu -->
+        <button class="menu-toggle" (click)="toggleMenu()">
             <span></span>
             <span></span>
             <span></span>
-        </div>
+        </button>
+
+        <!-- Orta Kısım -->
         <div class="navbar-menu" [class.active]="isMenuOpen">
-            <ul class="nav-links">
-                <li><a routerLink="/" (click)="closeMenu()">Ana Sayfa</a></li>
-                <li><a routerLink="/products" (click)="closeMenu()">Ürünler</a></li>
-                <li><a routerLink="/categories" (click)="closeMenu()">Kategoriler</a></li>
-            </ul>
+            <div class="nav-links">
+                <a routerLink="/" (click)="closeMenu()">Ana Sayfa</a>
+                <div class="dropdown">
+                    <a (click)="scrollToCategories()">Kategoriler</a>
+                    <div class="dropdown-content">
+                        <a *ngFor="let category of categories" 
+                           (click)="goToCategory(category.slug)">
+                            {{ category.name }}
+                        </a>
+                    </div>
+                </div>
+                <a routerLink="/products" (click)="closeMenu()">Ürünler</a>
+                <a routerLink="/campaigns" (click)="closeMenu()">Kampanyalar</a>
+            </div>
+
+            <!-- Sağ Kısım -->
             <div class="navbar-end">
+                <!-- Sepet İkonu -->
                 <div class="cart-icon">
-                    <a routerLink="/cart">
+                    <a routerLink="/cart" (click)="closeMenu()">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="cart-count" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
                     </a>
                 </div>
-                
+
                 <!-- Giriş yapmamış kullanıcılar için -->
                 <div class="user-menu" *ngIf="!currentUser">
-                    <button class="login-btn" (click)="openLoginModal()">
-                        <i class="fas fa-sign-in-alt"></i>
-                        Giriş Yap
-                    </button>
-                    <button class="register-btn" (click)="openRegisterModal()">
-                        <i class="fas fa-user-plus"></i>
-                        Kayıt Ol
-                    </button>
+                    <button class="login-btn" (click)="openLoginModal()">Giriş Yap</button>
+                    <button class="register-btn" (click)="openRegisterModal()">Kayıt Ol</button>
                 </div>
 
                 <!-- Giriş yapmış kullanıcılar için -->

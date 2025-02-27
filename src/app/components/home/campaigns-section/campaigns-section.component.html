@@ -1,22 +1,91 @@
 <section class="campaigns-section">
-    <div class="section-title">
-        <h2>Kampanyalar</h2>
+    <div class="section-header">
+        <h2>Fırsat Dünyası</h2>
+        <p>En yeni teknoloji ürünlerinde özel fırsatlar</p>
     </div>
-    <div class="campaigns-grid">
-        <div class="campaign-card">
-            <img src="assets/images/campaign1.jpg" alt="Kampanya 1">
+
+    <div class="campaigns-container">
+        <!-- Ana Kampanya -->
+        <div class="campaign-spotlight">
             <div class="campaign-content">
-                <h3>Sezon Sonu İndirimleri</h3>
-                <p>%50'ye varan indirimler</p>
-                <button class="secondary-button">İncele</button>
+                <div class="campaign-badge">
+                    <span class="pulse"></span>
+                    SÜPER FIRSAT
+                </div>
+                <h3>MacBook Pro M3</h3>
+                <div class="campaign-details">
+                    <div class="price-info">
+                        <div class="discount">%12 İNDİRİM</div>
+                        <div class="prices">
+                            <span class="new-price">89.999₺</span>
+                            <span class="old-price">99.999₺</span>
+                        </div>
+                    </div>
+                    <div class="stock-info">
+                        <div class="stock-bar">
+                            <div class="stock-progress" style="width: 35%"></div>
+                        </div>
+                        <span>Sınırlı Stok</span>
+                    </div>
+                </div>
+                <button class="action-button" routerLink="/products">
+                    <span>Hemen İncele</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+            <div class="campaign-image">
+                <img src="assets/images/macbook-pro.png" alt="MacBook Pro M3">
             </div>
         </div>
-        <div class="campaign-card">
-            <img src="assets/images/campaign2.jpg" alt="Kampanya 2">
-            <div class="campaign-content">
-                <h3>Yeni Üyelere Özel</h3>
-                <p>İlk alışverişinizde %20 indirim</p>
-                <button class="secondary-button">İncele</button>
+
+        <!-- Kampanya Kartları -->
+        <div class="campaign-cards">
+            <!-- Gaming Kampanyası -->
+            <div class="campaign-card" routerLink="/category/gaming">
+                <div class="card-content">
+                    <div class="card-badge gaming">Gaming</div>
+                    <h4>Gaming Aksesuarları</h4>
+                    <p>%40'a varan indirimler</p>
+                    <div class="card-cta">
+                        <span>Keşfet</span>
+                        <i class="fas fa-gamepad"></i>
+                    </div>
+                </div>
+                <div class="card-image">
+                    <img src="assets/images/gaming-accessories.png" alt="Gaming Aksesuarları">
+                </div>
+            </div>
+
+            <!-- Telefon Kampanyası -->
+            <div class="campaign-card" routerLink="/category/phones">
+                <div class="card-content">
+                    <div class="card-badge phones">Telefonlar</div>
+                    <h4>Akıllı Telefonlar</h4>
+                    <p>2.000₺'ye varan indirim</p>
+                    <div class="card-cta">
+                        <span>İncele</span>
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+                <div class="card-image">
+                    <img src="assets/images/smartphones.png" alt="Akıllı Telefonlar">
+                </div>
+            </div>
+
+            <!-- Kulaklık Kampanyası -->
+            <div class="campaign-card" routerLink="/category/accessories">
+                <div class="card-content">
+                    <div class="card-badge accessories">Aksesuarlar</div>
+                    <h4>Kablosuz Kulaklıklar</h4>
+                    <p>İkinci üründe %50 indirim</p>
+                    <div class="card-cta">
+                        <span>Alışverişe Başla</span>
+                        <i class="fas fa-headphones"></i>
+                    </div>
+                </div>
+                <div class="card-image">
+                    <img src="assets/images/.jpg" alt="Kablosuz Kulaklıklar">
+                </div>
             </div>
         </div>
     </div>

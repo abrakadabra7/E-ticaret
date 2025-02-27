@@ -1,19 +1,64 @@
 <section class="brands-section">
-    <div class="section-title">
-        <h2>Markalar</h2>
+    <div class="section-header">
+        <h2>Popüler Markalar</h2>
+        <p>En çok tercih edilen markaların ürünlerini keşfedin</p>
     </div>
-    <div class="brands-slider">
-        <div class="brand-logo">
-            <img src="assets/images/brand1.png" alt="Marka 1">
+
+    <div class="brands-container">
+        <!-- Premium Markalar -->
+        <div class="premium-brands">
+            <div class="brand-card" *ngFor="let brand of premiumBrands">
+                <div class="brand-content">
+                    <img [src]="brand.logo" [alt]="brand.name">
+                    <div class="brand-info">
+                        <h3>{{ brand.name }}</h3>
+                        <p>{{ brand.category }}</p>
+                    </div>
+                    <div class="brand-stats">
+                        <div class="stat">
+                            <i class="fas fa-box"></i>
+                            <span>{{ brand.productCount }} Ürün</span>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-star"></i>
+                            <span>{{ brand.rating }}/5</span>
+                        </div>
+                    </div>
+                    <button class="brand-btn" (click)="navigateToBrand(brand.id)">
+                        <i class="fas fa-shopping-bag"></i>
+                        Ürünleri Gör
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="brand-logo">
-            <img src="assets/images/brand2.png" alt="Marka 2">
+
+        <!-- Marka Filtreleme -->
+        <div class="brands-filter">
+            <div class="filter-header">
+                <h3>Kategoriye Göre Filtrele</h3>
+            </div>
+            <div class="filter-buttons">
+                <button 
+                    *ngFor="let category of categories"
+                    [class.active]="selectedCategory === category"
+                    (click)="filterBrands(category)">
+                    <i class="fas fa-tag"></i>
+                    {{ category }}
+                </button>
+            </div>
         </div>
-        <div class="brand-logo">
-            <img src="assets/images/brand3.png" alt="Marka 3">
-        </div>
-        <div class="brand-logo">
-            <img src="assets/images/brand4.png" alt="Marka 4">
+
+        <!-- Diğer Markalar Grid -->
+        <div class="brands-grid">
+            <div class="brand-item" *ngFor="let brand of filteredBrands" (click)="navigateToBrand(brand.id)">
+                <div class="brand-logo">
+                    <img [src]="brand.logo" [alt]="brand.name">
+                </div>
+                <div class="brand-overlay">
+                    <span class="product-count">{{ brand.productCount }} Ürün</span>
+                    <span class="view-products">Ürünleri Gör</span>
+                </div>
+            </div>
         </div>
     </div>
 </section>
