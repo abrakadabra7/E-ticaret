@@ -69,7 +69,45 @@
       <!-- Favoriler -->
       <div *ngIf="activeTab === 'favorites'" class="favorites-section">
         <h2>Favorilerim</h2>
-        <!-- Favori ürünler buraya gelecek -->
+        
+        <!-- Yükleniyor -->
+        <div *ngIf="loadingFavorites" class="loading-spinner">
+          <div class="spinner"></div>
+        </div>
+
+        <!-- Favori Yok -->
+        <div *ngIf="!loadingFavorites && favoriteProducts.length === 0" class="empty-favorites">
+          <i class="fas fa-heart-broken"></i>
+          <h3>Henüz Favori Ürününüz Yok</h3>
+          <p>Beğendiğiniz ürünleri favorilerinize ekleyerek daha sonra kolayca ulaşabilirsiniz.</p>
+          <button routerLink="/products" class="browse-products-btn">
+            <i class="fas fa-shopping-bag"></i>
+            Ürünleri İncele
+          </button>
+        </div>
+
+        <!-- Favori Ürünler -->
+        <div *ngIf="!loadingFavorites && favoriteProducts.length > 0" class="favorites-grid">
+          <div *ngFor="let product of favoriteProducts" class="favorite-product-card">
+            <button class="remove-favorite" (click)="removeFavorite(product.id)">
+              <i class="fas fa-times"></i>
+            </button>
+            <a [routerLink]="['/products', product.id]" class="product-link">
+              <div class="product-image">
+                <img [src]="product.images[0]" [alt]="product.name">
+              </div>
+              <div class="product-info">
+                <h3>{{product.name}}</h3>
+                <div class="price-container">
+                  <span class="current-price">{{product.price | currency:'TRY':'symbol-narrow':'1.2-2'}}</span>
+                  <span *ngIf="product.original_price" class="original-price">
+                    {{product.original_price | currency:'TRY':'symbol-narrow':'1.2-2'}}
+                  </span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>

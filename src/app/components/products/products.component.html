@@ -54,6 +54,16 @@
         <div *ngIf="calculateDiscount(product) > 0" class="discount-badge">
           %{{ calculateDiscount(product) | number:'1.0-0' }}
         </div>
+        <div class="product-actions">
+          <button 
+            class="action-btn favorite-btn" 
+            [class.active]="isFavorite(product.id)"
+            (click)="toggleFavorite($event, product)" 
+            [attr.aria-label]="isFavorite(product.id) ? 'Favorilerden Çıkar' : 'Favorilere Ekle'"
+            [title]="isFavorite(product.id) ? 'Favorilerden Çıkar' : 'Favorilere Ekle'">
+            <i class="fas fa-heart"></i>
+          </button>
+        </div>
       </div>
 
       <!-- Ürün Bilgileri -->

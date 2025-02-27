@@ -7,6 +7,7 @@ import { Category } from '../../models/category.model';
 import { ProductService } from '../../services/product.service';
 import { CategoryService } from '../../services/category.service';
 import { CartService } from '../../services/cart.service';
+import { FavoriteService } from '../../services/favorite.service';
 
 @Component({
   selector: 'app-products',
@@ -31,6 +32,7 @@ export class ProductsComponent implements OnInit {
     private productService: ProductService,
     private categoryService: CategoryService,
     private cartService: CartService,
+    private favoriteService: FavoriteService,
     private route: ActivatedRoute
   ) {}
 
@@ -135,6 +137,25 @@ export class ProductsComponent implements OnInit {
       alert('Ürün sepete eklenirken bir hata oluştu!');
     } finally {
       this.addingToCart[product.id] = false;
+    }
+  }
+
+  isFavorite(productId: string): boolean {
+    return this.favoriteService.isFavorite(productId);
+  }
+
+  async toggleFavorite(event: Event, product: Product) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    try {
+      if (this.isFavorite(product.id)) {
+        await this.favoriteService.removeFromFavorites(product.id);
+      } else {
+        await this.favoriteService.addToFavorites(product.id);
+      }
+    } catch (error) {
+      console.error('Favori işlemi sırasında hata:', error);
     }
   }
 } 
