@@ -1,4 +1,36 @@
 # ETicaret
+## Yapılanlar
+### 21/02/2025
+- Proje oluşturuldu
+- Navbar yapıldı
+- Home page oluşturuldu
+  
+### 24/02/2025
+- Footer oluşturuldu
+- Hatalar giderildi
+
+ ### 25/02/2025
+- Admin paneli oluşturuldu
+- Supabase bağlantısı kuruldu
+- Supabase ile login register işlemleri gerçekleştirildi
+
+  
+ ### 26/02/2025
+ - Kart servisleri eklendi
+ - Ürün detay eklendi
+ - Ödeme yöntemi eklendi
+ - Hatalar giderildi
+
+   
+ ### 27/02/2025 
+ - Profilim kısmı eklendi
+ - Yeni özellikler güncellendi
+
+<br>
+
+## Youtube Videosu İçin Görsele Tıklayabilirsiniz 
+[<img src="https://github.com/abrakadabra7/E-ticaret/blob/master/%D0%A1%D0%BD%D0%B8%D0%BC%D0%BE%D0%BA%20%D1%8D%D0%BA%D1%80%D0%B0%D0%BD%D0%B0%202025-02-27%20164629.png" width="50%">](https://youtu.be/8Tg9FYiinGs " E-ticaret ")
+<br><br>
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.1.5.
 
