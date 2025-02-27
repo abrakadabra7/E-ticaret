@@ -37,7 +37,7 @@
             </span>
           </td>
           <td>
-            <button class="btn-icon" [routerLink]="[product.id, 'edit']">
+            <button class="btn-icon" (click)="openEditModal(product)">
               <i class="fas fa-edit"></i>
             </button>
             <button class="btn-icon delete" (click)="deleteProduct(product.id)">
@@ -55,4 +55,13 @@
     (closeModal)="closeAddModal()"
     (saveProduct)="onSaveProduct($event)">
   </app-add-product-modal>
+
+  <app-edit-product-modal
+    *ngIf="selectedProduct"
+    [isOpen]="isEditModalOpen"
+    [product]="selectedProduct"
+    [categories]="categories"
+    (closeModal)="closeEditModal()"
+    (saveProduct)="onUpdateProduct($event)">
+  </app-edit-product-modal>
 </div> 

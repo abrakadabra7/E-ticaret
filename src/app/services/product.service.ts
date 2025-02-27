@@ -145,41 +145,63 @@ export class ProductService {
 
   async updateProduct(id: string, product: Partial<Product>): Promise<Product> {
     try {
-      let imageUrls = product.images as string[];
-      
-      // Eğer yeni resimler varsa yükle
-      if (product.newImages && product.newImages.length > 0) {
-        const newImageUrls: string[] = [];
-        
-        for (const image of product.newImages) {
-          const fileName = `${Date.now()}-${image.name}`;
-          const { data: uploadData, error: uploadError } = await this.supabase.instance
-            .storage
-            .from('product-images')
-            .upload(fileName, image);
+      // Önce mevcut ürünü al
+      const { data: existingProduct, error: fetchError } = await this.supabase.instance
+        .from('products')
+        .select('*')
+        .eq('id', id)
+        .single();
 
-          if (uploadError) throw uploadError;
+      if (fetchError) throw fetchError;
 
-          const { data: urlData } = this.supabase.instance
-            .storage
-            .from('product-images')
-            .getPublicUrl(fileName);
+      // Yeni ve eski verileri birleştir
+      const { newImages, ...productData } = product;
+      let updatedImageUrls = [...(existingProduct.images || [])];
 
-          newImageUrls.push(urlData.publicUrl);
-        }
-        
-        // Mevcut resimlerle yeni resimleri birleştir
-        imageUrls = [...(imageUrls || []), ...newImageUrls];
+      // Yeni resimleri yükle
+      if (newImages && newImages.length > 0) {
+        const uploadedImages = await Promise.all(
+          newImages.map(async (file: File) => {
+            const fileName = `${Date.now()}-${file.name}`;
+            const { data, error } = await this.supabase.instance.storage
+              .from('products')
+              .upload(fileName, file);
+
+            if (error) throw error;
+
+            const { data: { publicUrl } } = this.supabase.instance.storage
+              .from('products')
+              .getPublicUrl(fileName);
+
+            return publicUrl;
+          })
+        );
+
+        updatedImageUrls = [...updatedImageUrls, ...uploadedImages];
+      }
+
+      // Boş olmayan alanları güncelle
+      const updateData: any = {
+        ...existingProduct,
+        ...Object.fromEntries(
+          Object.entries(productData).filter(([_, value]) => value !== null && value !== undefined && value !== '')
+        ),
+        images: updatedImageUrls,
+        updated_at: new Date().toISOString()
+      };
+
+      // Özel fiyat kontrolü
+      if (productData.price !== undefined && productData.price !== null) {
+        updateData.price = productData.price;
+      }
+      if (productData.original_price !== undefined && productData.original_price !== null) {
+        updateData.original_price = productData.original_price;
       }
 
       // Ürünü güncelle
-      const { data, error } = await this.supabase.instance
+      const { data: updatedProduct, error: updateError } = await this.supabase.instance
         .from('products')
-        .update({
-          ...product,
-          images: imageUrls,
-          updated_at: new Date().toISOString()
-        })
+        .update(updateData)
         .eq('id', id)
         .select(`
           *,
@@ -190,8 +212,8 @@ export class ProductService {
         `)
         .single();
 
-      if (error) throw error;
-      return data;
+      if (updateError) throw updateError;
+      return updatedProduct;
     } catch (error) {
       console.error('Ürün güncellenirken hata:', error);
       throw error;

@@ -1,0 +1,108 @@
+<!-- Modal Overlay -->
+<div class="modal-overlay" [class.active]="isOpen" (click)="onOverlayClick($event)">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2>Ürün Düzenle</h2>
+      <button class="close-btn" (click)="closeModal.emit()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="product-form">
+      <div class="error-message" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
+      <div class="form-group">
+        <label for="name">Ürün Adı</label>
+        <input type="text" id="name" formControlName="name" placeholder="Ürün adını girin">
+      </div>
+
+      <div class="form-group">
+        <label for="description">Açıklama</label>
+        <textarea id="description" formControlName="description" placeholder="Ürün açıklamasını girin"></textarea>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="price">Satış Fiyatı</label>
+          <input type="number" id="price" formControlName="price" placeholder="0.00">
+        </div>
+        <div class="form-group">
+          <label for="original_price">Normal Fiyat</label>
+          <input type="number" id="original_price" formControlName="original_price" placeholder="0.00">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="stock">Stok</label>
+          <input type="number" id="stock" formControlName="stock" placeholder="0">
+        </div>
+        <div class="form-group">
+          <label for="category">Kategori</label>
+          <select id="category" formControlName="category_id">
+            <option value="">Kategori Seçin</option>
+            <option *ngFor="let category of categories" [value]="category.id">
+              {{ category.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Ürün Görselleri</label>
+        <div class="image-upload-container">
+          <div class="image-previews">
+            <div class="image-preview" *ngFor="let url of product.images; let i = index">
+              <img [src]="url" alt="Ürün görseli">
+              <button type="button" class="remove-image" (click)="removeImage(i)">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="image-preview" *ngFor="let url of imagePreviewUrls; let i = index">
+              <img [src]="url" alt="Yeni görsel">
+              <button type="button" class="remove-image" (click)="removeImage(i + product.images.length)">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <label class="upload-label">
+            <input type="file" multiple accept="image/*" (change)="onFileSelected($event)">
+            <i class="fas fa-cloud-upload-alt"></i>
+            Görsel Yükle
+          </label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Özellikler</label>
+        <div class="specifications-container" formGroupName="specifications">
+          <div class="specification-row" *ngFor="let spec of specificationsGroup.controls | keyvalue">
+            <input type="text" [value]="spec.key" (input)="updateSpecificationKey(spec.key, $event)" placeholder="Özellik">
+            <input type="text" [formControlName]="spec.key" placeholder="Değer">
+            <button type="button" class="remove-spec" (click)="removeSpecification(spec.key)">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <button type="button" class="add-spec" (click)="addSpecification()">
+            <i class="fas fa-plus"></i>
+            Özellik Ekle
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="checkbox-label">
+          <input type="checkbox" formControlName="is_active">
+          Ürün Aktif
+        </label>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="productForm.invalid || isLoading">
+        <i class="fas fa-save"></i>
+        {{ isLoading ? 'Kaydediliyor...' : 'Kaydet' }}
+      </button>
+    </form>
+  </div>
+</div> 

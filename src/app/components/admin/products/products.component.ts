@@ -4,13 +4,14 @@ import { RouterModule } from '@angular/router';
 import { Product } from '../../../models/product.model';
 import { Category } from '../../../models/category.model';
 import { AddProductModalComponent } from './add-product-modal/add-product-modal.component';
+import { EditProductModalComponent } from './edit-product-modal/edit-product-modal.component';
 import { ProductService } from '../../../services/product.service';
 import { CategoryService } from '../../../services/category.service';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, RouterModule, AddProductModalComponent],
+  imports: [CommonModule, RouterModule, AddProductModalComponent, EditProductModalComponent],
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
@@ -18,6 +19,8 @@ export class ProductsComponent implements OnInit {
   products: Product[] = [];
   categories: Category[] = [];
   isAddModalOpen = false;
+  isEditModalOpen = false;
+  selectedProduct: Product | null = null;
 
   constructor(
     private productService: ProductService,
@@ -55,6 +58,16 @@ export class ProductsComponent implements OnInit {
     this.isAddModalOpen = false;
   }
 
+  openEditModal(product: Product) {
+    this.selectedProduct = product;
+    this.isEditModalOpen = true;
+  }
+
+  closeEditModal() {
+    this.selectedProduct = null;
+    this.isEditModalOpen = false;
+  }
+
   async onSaveProduct(productData: Partial<Product>) {
     try {
       console.log('Ürün kaydetme başladı:', productData);
@@ -65,6 +78,22 @@ export class ProductsComponent implements OnInit {
     } catch (error) {
       console.error('Ürün kaydedilirken hata:', error);
       const errorMessage = error instanceof Error ? error.message : 'Ürün kaydedilirken bir hata oluştu';
+      alert(errorMessage);
+    }
+  }
+
+  async onUpdateProduct(productData: Partial<Product>) {
+    if (!this.selectedProduct) return;
+    
+    try {
+      console.log('Ürün güncelleme başladı:', productData);
+      const updatedProduct = await this.productService.updateProduct(this.selectedProduct.id, productData);
+      console.log('Ürün başarıyla güncellendi:', updatedProduct);
+      await this.loadProducts();
+      this.closeEditModal();
+    } catch (error) {
+      console.error('Ürün güncellenirken hata:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Ürün güncellenirken bir hata oluştu';
       alert(errorMessage);
     }
   }
