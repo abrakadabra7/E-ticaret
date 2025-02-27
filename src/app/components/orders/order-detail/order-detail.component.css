@@ -105,25 +105,52 @@
 }
 
 .delivery-info {
+  background: white;
   padding: 2rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
 }
 
 .delivery-info h2 {
-  font-size: 1.25rem;
-  color: #1f2937;
-  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 1.5rem;
 }
 
 .info-content {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  gap: 1.5rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 6px;
 }
 
 .info-content p {
-  color: #4b5563;
-  line-height: 1.5;
+  margin: 0.5rem 0;
+  color: #666;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+.info-group {
+  margin-bottom: 1rem;
+}
+
+.info-group label {
+  display: block;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.info-group p {
+  background: #fff;
+  padding: 0.75rem;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
 }
 
 .order-items {
@@ -246,6 +273,14 @@
 
   .info-content {
     grid-template-columns: 1fr;
+  }
+
+  .delivery-info {
+    padding: 1.5rem;
+  }
+
+  .info-group p {
+    font-size: 0.9rem;
   }
 }
 

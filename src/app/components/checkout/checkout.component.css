@@ -431,12 +431,6 @@ button:disabled {
   animation-delay: 0.4s;
 }
 
-.blur {
-  filter: blur(4px);
-  pointer-events: none;
-  user-select: none;
-}
-
 @keyframes fadeIn {
   from {
     opacity: 0;
