@@ -1,119 +1,80 @@
-<section class="featured-products">
-    <div class="section-title">
-        <span class="subtitle">Öne Çıkan Ürünler</span>
-        <h2>En Çok Tercih Edilenler</h2>
+<div class="featured-products">
+  <div class="section-header">
+    <h2>En Çok Tercih Edilenler</h2>
+    <p>Müşterilerimizin en çok beğendiği ürünler</p>
+  </div>
+
+  <!-- Yükleniyor -->
+  <div *ngIf="isLoading" class="loading-spinner">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Hata Mesajı -->
+  <div *ngIf="error" class="error-message">
+    <i class="fas fa-exclamation-circle"></i>
+    {{ error }}
+  </div>
+
+  <!-- Ürün Grid -->
+  <div *ngIf="!isLoading && !error" class="products-grid">
+    <div *ngFor="let product of featuredProducts" class="product-card" [routerLink]="['/products', product.id]">
+      <!-- Ürün Resmi -->
+      <div class="product-image">
+        <img [src]="product.images[0] || '/assets/images/no-image.png'" [alt]="product.name">
+        <div *ngIf="calculateDiscount(product) > 0" class="discount-badge">
+          %{{ calculateDiscount(product) | number:'1.0-0' }}
+        </div>
+        <div class="product-actions">
+          <button 
+            class="action-btn favorite-btn" 
+            [class.active]="isFavorite(product.id)"
+            (click)="toggleFavorite($event, product)" 
+            [attr.aria-label]="isFavorite(product.id) ? 'Favorilerden Çıkar' : 'Favorilere Ekle'"
+            [title]="isFavorite(product.id) ? 'Favorilerden Çıkar' : 'Favorilere Ekle'">
+            <i class="fas fa-heart"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Ürün Bilgileri -->
+      <div class="product-info">
+        <h3 class="product-name">{{ product.name }}</h3>
+        <p class="product-description">{{ product.description }}</p>
+        
+        <!-- Fiyat -->
+        <div class="product-price">
+          <span class="current-price">{{ product.price | currency:'TRY':'symbol-narrow':'1.2-2' }}</span>
+          <span *ngIf="product.original_price" class="original-price">
+            {{ product.original_price | currency:'TRY':'symbol-narrow':'1.2-2' }}
+          </span>
+        </div>
+
+        <!-- Stok Durumu -->
+        <div class="stock-status" [class.in-stock]="product.stock > 0" [class.out-of-stock]="product.stock === 0">
+          <i class="fas" [class.fa-check-circle]="product.stock > 0" [class.fa-times-circle]="product.stock === 0"></i>
+          {{ product.stock > 0 ? 'Stokta' : 'Tükendi' }}
+        </div>
+
+        <!-- Sepete Ekle Butonu -->
+        <button 
+          class="add-to-cart-btn" 
+          (click)="addToCart(product); $event.stopPropagation()"
+          [disabled]="product.stock === 0 || addingToCart[product.id]">
+          <i class="fas" 
+             [class.fa-cart-plus]="!addingToCart[product.id] && product.stock > 0"
+             [class.fa-spinner]="addingToCart[product.id]"
+             [class.fa-spin]="addingToCart[product.id]"
+             [class.fa-times]="product.stock === 0">
+          </i>
+          {{ product.stock === 0 ? 'Tükendi' : (addingToCart[product.id] ? 'Ekleniyor...' : 'Sepete Ekle') }}
+        </button>
+      </div>
     </div>
-    <div class="products-grid">
-        <div class="product-card">
-            <div class="product-badge hot">En Çok Satan</div>
-            <div class="product-image">
-                <img src="assets/images/makbook.jpg" alt="MacBook Pro">
-                <div class="product-actions">
-                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
-                    <button class="action-btn"><i class="fas fa-heart"></i></button>
-                    <button class="action-btn"><i class="fas fa-search"></i></button>
-                </div>
-            </div>
-            <div class="product-info">
-                <div class="product-category">Laptop</div>
-                <h3>MacBook Pro M3</h3>
-                <div class="rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star-half-alt"></i>
-                    <span>(125)</span>
-                </div>
-                <div class="price">
-                    <span class="old-price">₺89.999</span>
-                    <span class="new-price">₺79.999</span>
-                </div>
-            </div>
-        </div>
+  </div>
 
-        <div class="product-card">
-            <div class="product-badge new">Yeni</div>
-            <div class="product-image">
-                <img src="assets/images/iphone.jpg" alt="iPhone 15 Pro">
-                <div class="product-actions">
-                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
-                    <button class="action-btn"><i class="fas fa-heart"></i></button>
-                    <button class="action-btn"><i class="fas fa-search"></i></button>
-                </div>
-            </div>
-            <div class="product-info">
-                <div class="product-category">Telefon</div>
-                <h3>iPhone 15 Pro</h3>
-                <div class="rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <span>(98)</span>
-                </div>
-                <div class="price">
-                    <span class="old-price">₺74.999</span>
-                    <span class="new-price">₺69.999</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <div class="product-badge discount">-20%</div>
-            <div class="product-image">
-                <img src="assets/images/airpods.jpg" alt="AirPods Pro">
-                <div class="product-actions">
-                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
-                    <button class="action-btn"><i class="fas fa-heart"></i></button>
-                    <button class="action-btn"><i class="fas fa-search"></i></button>
-                </div>
-            </div>
-            <div class="product-info">
-                <div class="product-category">Kulaklık</div>
-                <h3>AirPods Pro</h3>
-                <div class="rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <span>(156)</span>
-                </div>
-                <div class="price">
-                    <span class="old-price">₺7.999</span>
-                    <span class="new-price">₺6.399</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <div class="product-badge">Tükenmek Üzere</div>
-            <div class="product-image">
-                <img src="assets/images/ipad.avif" alt="iPad Pro">
-                <div class="product-actions">
-                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
-                    <button class="action-btn"><i class="fas fa-heart"></i></button>
-                    <button class="action-btn"><i class="fas fa-search"></i></button>
-                </div>
-            </div>
-            <div class="product-info">
-                <div class="product-category">Tablet</div>
-                <h3>iPad Pro M2</h3>
-                <div class="rating">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <span>(89)</span>
-                </div>
-                <div class="price">
-                    <span class="old-price">₺44.999</span>
-                    <span class="new-price">₺39.999</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+  <!-- Ürün Bulunamadı -->
+  <div *ngIf="!isLoading && !error && featuredProducts.length === 0" class="empty-state">
+    <i class="fas fa-box-open"></i>
+    <p>Henüz öne çıkan ürün bulunmuyor.</p>
+  </div>
+</div>

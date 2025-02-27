@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FavoriteService } from '../../services/favorite.service';
 import { User } from '../../models/user.model';
@@ -23,11 +23,19 @@ export class MyProfileComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private favoriteService: FavoriteService
+    private favoriteService: FavoriteService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     this.loadUserProfile();
+    
+    // Query parametresini dinle
+    this.route.queryParams.subscribe(params => {
+      if (params['tab'] && ['profile', 'orders', 'favorites'].includes(params['tab'])) {
+        this.setActiveTab(params['tab'] as 'profile' | 'orders' | 'favorites');
+      }
+    });
   }
 
   private async loadUserProfile() {

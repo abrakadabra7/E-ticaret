@@ -2,6 +2,11 @@ import { Injectable } from '@angular/core';
 import { SupabaseService } from './supabase.service';
 import { Product } from '../models/product.model';
 
+interface FavoriteCount {
+  product_id: string;
+  count: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -246,6 +251,27 @@ export class ProductService {
       if (error) throw error;
     } catch (error) {
       console.error('Ürün silinirken hata:', error);
+      throw error;
+    }
+  }
+
+  async getFeaturedProducts(): Promise<Product[]> {
+    try {
+      // En son eklenen 5 aktif ürünü getir
+      const { data: products, error: productsError } = await this.supabase.instance
+        .from('products')
+        .select(`
+          *,
+          category:categories (*)
+        `)
+        .eq('is_active', true)
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (productsError) throw productsError;
+      return products || [];
+    } catch (error) {
+      console.error('Öne çıkan ürünler yüklenirken hata:', error);
       throw error;
     }
   }

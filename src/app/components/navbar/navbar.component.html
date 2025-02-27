@@ -50,7 +50,7 @@
                             <i class="fas fa-box"></i>
                             Siparişlerim
                         </a>
-                        <a routerLink="/favorites" (click)="isUserMenuOpen = false">
+                        <a [routerLink]="['/profile']" [queryParams]="{tab: 'favorites'}" (click)="isUserMenuOpen = false">
                             <i class="fas fa-heart"></i>
                             Favorilerim
                         </a>
