@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CartService, CartItem } from '../../services/cart.service';
+import { OrderService, Order } from '../../services/order.service';
+import { SupabaseService } from '../../services/supabase.service';
 
 @Component({
   selector: 'app-checkout',
@@ -17,11 +19,13 @@ export class CheckoutComponent implements OnInit {
   checkoutForm: FormGroup;
   isLoading = false;
   currentStep = 1; // 1: Teslimat, 2: Ödeme, 3: Onay
-  paymentMethod = 'card'; // 'card' veya 'transfer'
+  paymentMethod: Order['payment_method'] = 'card';
   orderSuccess = false;
 
   constructor(
     private cartService: CartService,
+    private orderService: OrderService,
+    private supabaseService: SupabaseService,
     private fb: FormBuilder,
     private router: Router
   ) {
@@ -112,13 +116,37 @@ export class CheckoutComponent implements OnInit {
   }
 
   private async processPayment() {
-    // Ödeme işlemi simülasyonu
+    // Gerçek ödeme işlemi burada yapılacak
     return new Promise((resolve) => setTimeout(resolve, 2000));
   }
 
   private async saveOrder() {
-    // Sipariş kaydetme simülasyonu
-    return new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const user = await this.supabaseService.getCurrentUser();
+      if (!user) throw new Error('Kullanıcı bulunamadı');
+
+      const orderData = {
+        user_id: user.id,
+        items: this.cartItems,
+        total: this.cartTotal,
+        status: 'pending' as const,
+        shipping_address: {
+          fullName: this.checkoutForm.get('fullName')?.value,
+          email: this.checkoutForm.get('email')?.value,
+          phone: this.checkoutForm.get('phone')?.value,
+          address: this.checkoutForm.get('address')?.value,
+          city: this.checkoutForm.get('city')?.value,
+          district: this.checkoutForm.get('district')?.value,
+          zipCode: this.checkoutForm.get('zipCode')?.value,
+        },
+        payment_method: this.paymentMethod,
+      };
+
+      await this.orderService.createOrder(orderData);
+    } catch (error) {
+      console.error('Sipariş kaydedilirken hata:', error);
+      throw error;
+    }
   }
 
   getErrorMessage(controlName: string): string {

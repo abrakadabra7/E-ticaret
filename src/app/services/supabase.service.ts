@@ -1,5 +1,5 @@
 import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -40,6 +40,19 @@ export class SupabaseService {
       throw new Error('Supabase client henüz başlatılmadı');
     }
     return this.supabase;
+  }
+
+  async getCurrentUser(): Promise<User | null> {
+    if (!this.isBrowser) return null;
+    
+    try {
+      const { data: { user }, error } = await this.instance.auth.getUser();
+      if (error) throw error;
+      return user;
+    } catch (error) {
+      console.error('Kullanıcı bilgisi alınırken hata:', error);
+      return null;
+    }
   }
 
   async testConnection(): Promise<boolean> {

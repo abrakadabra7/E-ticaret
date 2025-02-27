@@ -38,7 +38,7 @@
           <div class="item-details">
             <h3>{{ item.product.name }}</h3>
             <p class="item-quantity">{{ item.quantity }} adet</p>
-            <p class="item-price">{{ item.price | currency:'TRY':'symbol-narrow':'1.2-2' }}</p>
+            <p class="item-price">{{ item.product.price | currency:'TRY':'symbol-narrow':'1.2-2' }}</p>
           </div>
         </div>
       </div>
